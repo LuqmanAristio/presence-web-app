@@ -25,11 +25,11 @@ export const Login = () =>{
 
                 <form onSubmit={onSubmit}>
                     <div className={styles.inputField}>
-                        <FontAwesomeIcon icon={faEnvelope} />
+                        <FontAwesomeIcon icon={faEnvelope} className={styles.ikonForm}/>
                         <input type="text" placeholder="Enter your username" ref={usernameRef} className={styles.usernameField}/>
                     </div>
                     <div className={styles.inputField}>
-                        <FontAwesomeIcon icon={faLock} />
+                        <FontAwesomeIcon icon={faLock} className={styles.ikonForm}/>
                         <input type="password" placeholder="Enter your password" ref={passwordRef} className={styles.passwordField}/>
                     </div>
                     <button type="submit" className={styles.loginButton}>Sign In</button>

@@ -1,0 +1,85 @@
+*{
+    margin: 0;
+}
+
+body{
+    background-color: #FEFDFF;
+}
+
+.sideBar{
+    width: 15%;
+    min-width: 250px;
+    height: 100vh;
+    background-color: #FEFDFF;
+    position: absolute;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    position: fixed;
+}
+
+.sideBar h1{
+    color: #365E7D;
+    font-size: 36px;
+    margin-top: 35px;
+    text-align: center;
+}
+
+.navMenu{
+    margin-top: 150px;
+}
+
+.listMenu{
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    padding: 15px 55px;
+}
+
+.listMenu h3{
+    margin-left: 20px;
+    font-size: 23px;
+}
+
+.listMenu h3 a{
+    text-decoration: none;
+    color: #878787;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.ikonNav{
+    font-size: 25px;
+    color: #878787;
+    width: 15%;
+}
+
+.profilePart{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.profilAdmin{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profilAdmin img{
+    width: 25%;
+}
+
+.profilAdmin h3{
+    font-size: 16px;
+    font-weight: 500;
+    margin: 10px 0px;
+}
+
+.profilAdmin p{
+    font-size: 14px;
+    font-weight: 400;
+    color: #878787;
+}
+
+

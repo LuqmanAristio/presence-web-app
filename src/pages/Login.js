@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import styles from '../style/Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 export const Login = () =>{
     const usernameRef = useRef(null);
@@ -32,7 +33,10 @@ export const Login = () =>{
                         <FontAwesomeIcon icon={faLock} className={styles.ikonForm}/>
                         <input type="password" placeholder="Enter your password" ref={passwordRef} className={styles.passwordField}/>
                     </div>
-                    <button type="submit" className={styles.loginButton}>Sign In</button>
+                    <Link to="/dashboard" className={styles.linkSubmit}>
+                        <button type="submit" className={styles.loginButton}>Sign In</button>
+                    </Link>
+                    
                 </form>
             </div>
 

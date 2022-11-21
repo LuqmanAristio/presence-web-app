@@ -1,0 +1,9 @@
+.mainContent{
+    width: 100%;
+}
+
+.contentMenu{
+    float: right;
+    width: 85%;
+    max-width: calc(100vw - 250px);
+}

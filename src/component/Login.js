@@ -19,7 +19,7 @@ const Login = () =>{
                 <button className="loginButton">Sign In</button>
             </div> 
 
-            <p className="forgotText">Forgot your password?<span> Contact Us</span></p>
+            <p className="forgotText">Forgot your password?<span><a href="#"> Contact Us</a></span></p>
         </div>
     )
 }

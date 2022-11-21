@@ -98,6 +98,9 @@
   font-size: 20px;
 }
 
-.forgotText span{
+.forgotText span a{
   font-weight: bold;
+  color: #365E7D;
+  font-size: 20px;
+  text-decoration: none;
 }

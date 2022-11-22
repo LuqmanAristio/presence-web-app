@@ -27,29 +27,84 @@ body{
     margin-top: 150px;
 }
 
-.listMenu{
+.inactiveMenu{
     display: flex;
     align-items: center;
     margin-top: 25px;
-    padding: 15px 55px;
+    height: 70px;
+    background-image: none;
 }
 
-.listMenu h3{
+.inactiveMenu .leftStand{
+    background-color: #365E7D; 
+    height: 100%;
+    width: 16px;
+    border-radius: 5px;
+    margin-left: -8px;
+    margin-right: 30px;
+    opacity: 0;
+}
+
+.inactiveMenu h3{
     margin-left: 20px;
     font-size: 23px;
 }
 
-.listMenu h3 a{
+.inactiveMenu h3 a{
     text-decoration: none;
     color: #878787;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 17px;
 }
 
-.ikonNav{
+.inactiveMenu .ikonNav{
     font-size: 25px;
     color: #878787;
     width: 15%;
+}
+
+.active{
+    transition: background-image 1s;
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    height: 70px;
+    background-image: linear-gradient(to right, rgba(147, 173, 193, 1), rgba(153, 210, 255, .1));
+}
+
+.active h3{
+    color: #365E7D;
+    margin-left: 20px;
+    font-size: 23px;
+}
+
+.active h3 a{
+    color: #365E7D;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.active .ikonNav{
+    font-size: 25px;
+    color: #365E7D;
+    width: 15%;
+}
+
+.active .leftStand{
+    background-color: #365E7D; 
+    height: 100%;
+    width: 16px;
+    border-radius: 5px;
+    margin-left: -8px;
+    margin-right: 30px;
+    animation: clickanim 0.4s linear;
+}
+
+@keyframes clickanim {
+    0%{opacity: 0;}
+    50% {opacity: 0.5;}
+    100% {opacity: 1;}
 }
 
 .profilePart{

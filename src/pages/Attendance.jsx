@@ -8,6 +8,6 @@ export const Attendance = () =>{
             <div className={styles.contentMenu}>
                 <h1>Attendance</h1>
             </div>
-        </div>   
+        </div>
     );
 };

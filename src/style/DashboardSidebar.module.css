@@ -86,6 +86,10 @@
 
 .timeAtt{
     text-align: right;
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    flex-direction: column;
 }
 
 .timeAtt h3{
@@ -101,6 +105,10 @@
 
 .nameAtt{
     text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-direction: column;
 }
 
 .nameAtt h3{

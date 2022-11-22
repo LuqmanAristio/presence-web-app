@@ -69,7 +69,7 @@ body{
     align-items: center;
     margin-top: 25px;
     height: 70px;
-    background-image: linear-gradient(to right, rgba(147, 173, 193, 1), rgba(153, 210, 255, .1));
+    background-image: linear-gradient(to right, rgba(147, 173, 193, .4), rgba(153, 210, 255, .1));
 }
 
 .active h3{

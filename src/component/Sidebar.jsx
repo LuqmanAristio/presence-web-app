@@ -9,31 +9,30 @@ import profilImg from "../image/profile.png"
 
 export const Sidebar = () => {
 
-    const location = useLocation();
-    const { pathname } = location;
-    const splitLocation = pathname.split("/");
+    const { pathname } = useLocation();
+    const currentLocation = pathname.slice(1);
     
     return(
         <div className={styles.sideBar}>
             <h1>Presence</h1>
 
             <div className={styles.navMenu}>
-                <div className={splitLocation[1] === "dashboard" ? styles.active : styles.inactiveMenu}>
+                <div className={currentLocation === "dashboard" ? styles.active : styles.inactiveMenu}>
                     <div className={styles.leftStand}></div>
                     <FontAwesomeIcon icon={faChartLine} className={styles.ikonNav}/>
                     <h3><Link to="/dashboard">Dashboard</Link></h3>
                 </div>
-                <div className={splitLocation[1] === "employees" ? styles.active : styles.inactiveMenu}>
+                <div className={currentLocation === "employees" ? styles.active : styles.inactiveMenu}>
                     <div className={styles.leftStand}></div>
                     <FontAwesomeIcon icon={faUser} className={styles.ikonNav}/>
                     <h3><Link to="/employees">Employees</Link></h3>
                 </div>
-                <div className={splitLocation[1] === "attendance" ? styles.active : styles.inactiveMenu}>
+                <div className={currentLocation === "attendance" ? styles.active : styles.inactiveMenu}>
                     <div className={styles.leftStand}></div>
                     <FontAwesomeIcon icon={faCalendarCheck} className={styles.ikonNav}/>
                     <h3><Link to="/attendance">Attendance</Link></h3>
                 </div>
-                <div className={splitLocation[1] === "databases" ? styles.active : styles.inactiveMenu}>
+                <div className={currentLocation === "databases" ? styles.active : styles.inactiveMenu}>
                     <div className={styles.leftStand}></div>
                     <FontAwesomeIcon icon={faDatabase} className={styles.ikonNav}/>
                     <h3><Link to="/databases">Databases</Link></h3>

@@ -1,0 +1,114 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.dashboardSidebar{
+    background-color: red;
+    position: absolute;
+    width: 25%;
+    top :0;
+    right: 0;
+    height: 100%;
+    position: fixed;
+    background-color: #FEFDFF;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    min-width: 400px;
+}
+
+.calendarInfo{
+    width: 100%;
+}
+
+.calendarInfo h1{
+    color: #365E7D;
+    font-weight: 700;
+    margin-top: 50px;
+    margin-left: 40px;
+    font-size: 30px;
+}
+
+.calendarInfo h3{
+    color: #365E7D;
+    font-weight: 600;
+    margin-left: 40px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.dateInfo{
+    margin: 0px 30px;
+    margin-top: 10px;
+}
+
+.dateInfo ul{
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.dateInfo ul li{
+    width: calc(100% / 7);
+    text-align: center;
+    color: #365E7D;
+}
+
+.dayName{
+    font-weight: 500;
+}
+
+.dateNum li{
+    margin-top: 20px;
+}
+
+.newPresent{
+    width: 100%;
+}
+
+.newPresent h1{
+    color: #365E7D;
+    font-weight: 700;
+    margin-top: 50px;
+    margin-left: 40px;
+    font-size: 30px;
+}
+
+.listAttendance{
+    margin: 30px 40px;
+    display: flex;
+}
+
+.listAttendance hr{
+    border: none;
+    background-color: #93ADC1;
+    width: 2px;
+    margin: 0px 20px;
+}
+
+.timeAtt{
+    text-align: right;
+}
+
+.timeAtt h3{
+    color: #436885;
+    font-size: 18px;
+    margin-top: 0.5px;
+}
+
+.timeAtt p{
+    color: #436885;
+    font-size: 16px;
+}
+
+.nameAtt{
+    text-align: left;
+}
+
+.nameAtt h3{
+    color: #436885;
+    font-size: 18px;
+}
+
+.nameAtt p{
+    color: #436885;
+    font-size: 16px;
+}

@@ -49,15 +49,31 @@
 .dateInfo ul li{
     width: calc(100% / 7);
     text-align: center;
-    color: #365E7D;
+    padding: 5px 0px;
 }
 
 .dayName{
     font-weight: 500;
+    color: #365E7D;
 }
 
 .dateNum li{
-    margin-top: 20px;
+    margin-top: 10px;
+}
+
+.activeDate{
+    color: #365E7D;
+}
+
+.activeDateToday{
+    background-color: #365E7D;
+    border-radius: 20px;
+    color: white;
+}
+
+.inactiveDate{
+    color: grey;
+    opacity: 50%;
 }
 
 .newPresent{

@@ -1,0 +1,137 @@
+.mainEmployees{
+    width: 100%;
+}
+
+.employeesContent{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.topEmployees{
+    margin-top: 3%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topEmployees h1{
+    font-size: 2vw;
+    color: #365E7D;
+}
+
+.topEmployees a{
+    text-decoration: none;
+    background-color: #366D99;
+    color: white;
+    font-weight: bold;
+    padding: 1% 5%;
+    font-size: 1vw;
+    height: fit-content;
+    border-radius: 5px;
+}
+
+.boxEmployees{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 3%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.searchEmployees{
+    width: 95%;
+    margin: 0 auto;
+    padding: 2% 0%;
+}
+
+.ikonSearch{
+    position: absolute;
+    color: #878787;
+    opacity: 70%;
+    font-size: 1.5vw;
+    margin: 0.8% 2%;
+}
+
+.searchEmployees input[type=text]{
+    width: 70%;
+    font-size: 1.2vw;
+    padding: 1% 2% 1% 9%;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    transition: 0.3s;
+    border: 1px solid rgba(201, 201, 201, .5);
+}
+
+.searchEmployees input[type=text]:focus{
+    transition: 0.3s;
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
+.searchEmployees ::placeholder{
+    font-weight: 500;
+    opacity: 50%;
+}
+
+.searchEmployees button{
+    width: 16%;
+    margin-left: 2%;
+    font-size: 1.2vw;
+    padding: 1% 0%;
+    border: none;
+    border-radius: 3px;
+    background-color: #366D99;
+    color: white;
+    cursor: pointer;
+}
+
+.listEmployees{
+    width: 100%;
+}
+
+.listEmployees table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table tr th{
+    padding: 2% 0%;
+    color: #365E7D;
+    font-size: 1.1vw;
+    border-top: 1px solid #EDEDED;
+    border-bottom: 1px solid #EDEDED;
+}
+
+table tr td{
+    border-top: 1px solid #EDEDED;
+    border-bottom: 1px solid #EDEDED;
+    color: #365E7D;
+    font-weight: 400;
+    text-align: center;
+    padding: 1.7% 0%;
+    font-size: 1vw;
+}
+
+.actionButton{
+    width: 15%;
+}
+
+.update{
+    background-color: green;
+    padding: 5% 7%;
+    margin-right: 2%;
+    color: white;
+    font-size: 1vw;
+}
+
+.delete{
+    background-color: red;
+    padding: 5% 8%;
+    margin-left: 2%;
+    font-size: 1vw;
+    color: white;
+}
+
+
+

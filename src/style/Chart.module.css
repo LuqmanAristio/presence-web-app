@@ -5,10 +5,10 @@
 
 .chartContent{
     width: 100%;
-    height: 57%;
+    height: 70%;
     display: flex;
     flex-direction: column;
-    margin-top: 2%;
+    margin-top: 5%;
 }
 
 .chartContent h1{
@@ -30,7 +30,7 @@
 .absentChart{
     width: 100%;
     height: 40%;
-    margin-top: 3%;
+    margin-top: 5%;
 }
 
 .absentChart h3{

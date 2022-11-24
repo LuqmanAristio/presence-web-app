@@ -21,12 +21,14 @@ export const ChartDashboard = () =>{
                 above: 'rgba(54, 94, 125, 0.4)',
             },
             tension : 0.4,
+            pointBorderWidth : 7,
           },
         ],
       });
 
       const option = ({
         responsive : true,
+        maintainAspectRatio: false,
 
         plugins: {
             legend: {

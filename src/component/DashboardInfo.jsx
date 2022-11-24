@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import styles from "../style/DashboardInfo.module.css"
+import { ChartDashboard } from "./ChartDashboard"
 
 export const DashboardInfo = () => {
     return (
@@ -31,7 +32,7 @@ export const DashboardInfo = () => {
                         <h3>Absent</h3>
                     </div>
                 </div>
-
+                <ChartDashboard></ChartDashboard>
             </div>
         </div>
     )

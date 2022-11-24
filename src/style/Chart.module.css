@@ -1,0 +1,40 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.chartContent{
+    width: 100%;
+    height: 57%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+}
+
+.chartContent h1{
+    font-size: 1.4vw;
+}
+
+.attendanceChart{
+    width: 100%;
+    height: 40%;
+    margin-top: 1%;
+}
+
+.attendanceChart h3{
+    color: #4A80AA;
+    font-size: 1vw;
+    font-weight: 500;
+}
+
+.absentChart{
+    width: 100%;
+    height: 40%;
+    margin-top: 3%;
+}
+
+.absentChart h3{
+    color: #4A80AA;
+    font-size: 1vw;
+    font-weight: 500;
+}

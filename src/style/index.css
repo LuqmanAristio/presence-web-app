@@ -2,6 +2,8 @@
 
 *{
   font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -17,4 +19,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.root{
+  height: 100%;
 }

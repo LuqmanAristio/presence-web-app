@@ -10,31 +10,35 @@
 
 .dashboardContent{
     width: 90%;
-    margin-top: 2%;
     margin-left: auto;
     margin-right: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .mainDashboard h2{
     font-size: 1.1vw;
     font-weight: 400;
     color: #4A80AA;
+    margin-top: 2%;
 }
 
 .mainDashboard h1{
-    font-size: 2.5vw;
+    font-size: 2vw;
     color: #365E7D;
 }
 
 .presentDay{
     display: flex;
     width: 100%;
-    align-items: center;
-    margin-top: 3%;
+    height: 6%;
 }
 
 .todayPre{
     width: fit-content;
+    margin-top: auto;
 }
 
 .todayPre a{
@@ -49,6 +53,7 @@
 .yesPre{
     width: fit-content;
     margin-left: 20px;
+    margin-top: auto;
 }
 
 .yesPre a{

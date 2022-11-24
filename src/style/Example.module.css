@@ -3,7 +3,7 @@
 }
 
 .contentMenu{
-    float: right;
+    margin-left: 15%;
     width: 85%;
-    max-width: calc(100vw - 250px);
+    display: flex;
 }

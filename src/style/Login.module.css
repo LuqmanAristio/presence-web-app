@@ -11,27 +11,28 @@
 .loginBox{
   background-color: white;
   width: 40%;
-  height: 60%;
+  height: fit-content;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 3% 0%;
 }
 
 .loginBox h1{
   color: #365E7D;
   text-align: center;
-  font-size: 30px;
+  font-size: 1.6vw;
 }
 
 .loginBox p{
   color: #365E7D;
   opacity: 80%;
-  font-size: 20px;
+  font-size: 1.2vw;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 4%;
 }
 
 .loginBox form{
@@ -41,24 +42,21 @@
 .inputField{
   display: flex;
   width: 100%;
-  margin: 0 auto;
-  margin-top: 30px;
-  display: flex;
-  justify-content: left;
+  margin-top: 3%;
   align-items: center;
 }
 
 .ikonForm{
   position: absolute;
-  font-size: 35px;
+  font-size: 1.8vw;
   color: #4A80AA;
-  margin-left: 50px;
+  margin-left: 2.5%;
 }
 
 .inputField input[type=text], input[type=password]{
   width: 100%;
-  padding: 18px 18px 18px 120px;
-  font-size: 20px;
+  padding: 1vw 1vw 1vw 6vw;
+  font-size: 1.1vw;
   border: 1px solid rgba(201, 201, 201, .5);
   border-radius: 10px;
   transition: 0.5s;
@@ -83,14 +81,13 @@
   background-color: #4A80AA;
   color: white;
   border: none;
-  padding: 18px 0px;
+  padding: 1vw 0px;
   border-radius: 10px;
-  font-size: 20px;
-  margin-top: 30px;
+  font-size: 1.3vw;
+  margin-top: 3%;
   cursor: pointer;
   font-weight: bold;
   transition: 0.3s;
-  margin-bottom: 25px;
 }
 
 .linkSubmit{
@@ -105,13 +102,13 @@
 .forgotText{
   color: #365E7D;
   opacity: 80%;
-  font-size: 20px;
-  margin-top: 40px;
+  font-size: 1vw;
+  margin-top: 1.5%;
 }
 
 .forgotText span a{
   font-weight: bold;
   color: #365E7D;
-  font-size: 20px;
+  font-size: 1vw;
   text-decoration: none;
 }

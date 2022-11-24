@@ -12,32 +12,35 @@
     position: fixed;
     background-color: #FEFDFF;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    min-width: 400px;
 }
 
 .calendarInfo{
-    width: 100%;
+    width: 95%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .calendarInfo h1{
     color: #365E7D;
     font-weight: 700;
-    margin-top: 50px;
-    margin-left: 40px;
-    font-size: 30px;
+    font-size: 1.8vw;
+    margin-left: 3%;
 }
 
 .calendarInfo h3{
     color: #365E7D;
     font-weight: 600;
-    margin-left: 40px;
-    font-size: 20px;
-    margin-top: 20px;
+    font-size: 1.1vw;
+    margin-top: 5%;
+    margin-left: 3%;
 }
 
 .dateInfo{
-    margin: 0px 30px;
-    margin-top: 10px;
+    margin-top: 2%;
 }
 
 .dateInfo ul{
@@ -49,7 +52,8 @@
 .dateInfo ul li{
     width: calc(100% / 7);
     text-align: center;
-    padding: 5px 0px;
+    padding: 1% 0px;
+    font-size: 0.8vw;
 }
 
 .dayName{
@@ -58,7 +62,7 @@
 }
 
 .dateNum li{
-    margin-top: 10px;
+    margin-top: 2%;
 }
 
 .activeDate{
@@ -77,27 +81,32 @@
 }
 
 .newPresent{
-    width: 100%;
+    width: 95%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 .newPresent h1{
     color: #365E7D;
     font-weight: 700;
-    margin-top: 50px;
-    margin-left: 40px;
-    font-size: 30px;
+    font-size: 1.8vw;
+    margin-left: 3%;
+    margin-bottom: 5%;
 }
 
 .listAttendance{
-    margin: 30px 40px;
+    margin: 3% 3%;
     display: flex;
+    margin-left: 3%;
 }
 
 .listAttendance hr{
     border: none;
     background-color: #93ADC1;
     width: 2px;
-    margin: 0px 20px;
+    margin: 0px 4%;
 }
 
 .timeAtt{
@@ -110,13 +119,12 @@
 
 .timeAtt h3{
     color: #436885;
-    font-size: 18px;
-    margin-top: 0.5px;
+    font-size: 1vw;
 }
 
 .timeAtt p{
     color: #436885;
-    font-size: 16px;
+    font-size: 0.9vw;
 }
 
 .nameAtt{
@@ -129,10 +137,10 @@
 
 .nameAtt h3{
     color: #436885;
-    font-size: 18px;
+    font-size: 1vw;
 }
 
 .nameAtt p{
     color: #436885;
-    font-size: 16px;
+    font-size: 0.9vw;
 }

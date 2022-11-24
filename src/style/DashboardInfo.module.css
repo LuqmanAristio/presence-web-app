@@ -1,0 +1,87 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.mainDashboard{
+    width: 70.5%;
+    display: flex;
+}
+
+.dashboardContent{
+    width: 90%;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mainDashboard h2{
+    font-size: 1.1vw;
+    font-weight: 400;
+    color: #4A80AA;
+}
+
+.mainDashboard h1{
+    font-size: 2.5vw;
+    color: #365E7D;
+}
+
+.presentDay{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-top: 3%;
+}
+
+.todayPre{
+    width: fit-content;
+}
+
+.todayPre a{
+    padding: 4% 3vw; 
+    background-color: #4A80AA;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    font-size: 0.8vw;
+}
+
+.yesPre{
+    width: fit-content;
+    margin-left: 20px;
+}
+
+.yesPre a{
+    padding: 3.5% 3vw; 
+    background-color: #4A80AA;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    font-size: 0.8vw;
+}
+
+.infoBox{
+    margin-top: 2%;
+    display: flex;
+    background-color: white;
+    width: 100%;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    flex-wrap: wrap;
+    padding: 3% 0%;
+}
+
+.infoValue~.infoValue{
+    margin-left: 18%;
+}
+
+.infoValue h1{
+    font-size: 2vw;
+    font-weight: 700;
+}
+
+.infoValue h3{
+    font-size: 1vw;
+    font-weight: 500;
+    color: #4A80AA;
+}

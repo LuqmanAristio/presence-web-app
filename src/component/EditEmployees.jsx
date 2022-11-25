@@ -1,18 +1,18 @@
 import styles from "../style/Employees.module.css"
 
-export const AddEmployees = () =>{
+export const EditEmployees = () =>{
     return(
         <div className={styles.addEmployees}>
             <div className={styles.formulirAdd}>
                 <div className={styles.leftEmployees}>
                     <h1>Presence</h1>
 
-                    <h2>Add your new employee here.</h2>
+                    <h2>Edit employee personal data.</h2>
                     <p>Start their career here by filling in their personal data first</p>
 
                 </div>
                 <div className={styles.rightEmployees}>
-                    <h2>Registration</h2>
+                    <h2>Updating</h2>
                     <form>
                         <div className={styles.formInput}>
                             <div className={styles.form}>

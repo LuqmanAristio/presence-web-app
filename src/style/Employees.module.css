@@ -273,3 +273,63 @@ table tr td{
     border-radius: 50%;
     cursor: pointer;
 }
+
+.deleteBox{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialogBox{
+    width: 30%;
+    background-color: white;
+    height: 30%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.warnIcon{
+    font-size: 4vw;
+    color:#F49D1A;
+}
+
+.dialogBox h1{
+    text-align: center;
+    font-size: 1.7vw;
+    margin: 3% 0%;
+}
+
+.answerOption{
+    display: flex;
+    width: 85%;
+    justify-content: space-between;
+}
+
+.yesAnswer{
+    text-decoration: none;
+    background-color: #3C37FF;
+    color: white;
+    font-size: 1.2vw;
+    padding: 2% 15%;
+    border-radius: 5px;
+}
+
+.noAnswer{
+    text-decoration: none;
+    background-color: #DC3535;
+    color: white;
+    font-size: 1.2vw;
+    padding: 2% 15%;
+    border-radius: 5px;
+}

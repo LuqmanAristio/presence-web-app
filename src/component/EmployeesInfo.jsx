@@ -1,15 +1,24 @@
 import { Link } from "react-router-dom"
 import styles from "../style/Employees.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faPen, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faPen, faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {useState} from 'react'
+import { AddEmployees } from "./AddEmployeesForm";
 
-export const EmployeesInfo = () => {
+export const EmployeesInfo = (props) => {
+
+    const [isShown, setIsShown] = useState(false);
+
+    const handleClick = event => {
+        setIsShown(current => !current);
+    };
+
     return(
         <div className={styles.mainEmployees}>
             <div className={styles.employeesContent}>
                 <div className={styles.topEmployees}>
                     <h1>Employees</h1>
-                    <Link>Add New +</Link>
+                    <Link onClick={handleClick}>Add New +</Link>
                 </div>
                 <div className={styles.boxEmployees}>
                     <div className={styles.searchEmployees}>
@@ -90,6 +99,12 @@ export const EmployeesInfo = () => {
                     </div>
                 </div>
             </div>
+            {isShown && (
+                <div>
+                    <AddEmployees />
+                    <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={handleClick}/>
+                </div>
+            )}
         </div>
     )
 }

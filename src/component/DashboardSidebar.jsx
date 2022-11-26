@@ -47,18 +47,18 @@ export const DashboardSidebar = () => {
                         <li>Sat</li>
                     </ul>
                     <ul className={styles.dateNum}>
-                        { dateLast.map((dateLast) => <li className={styles.inactiveDate}>{dateLast}</li>) }
+                        { dateLast.map((dateLast) => <li key={dateLast} className={styles.inactiveDate}>{dateLast}</li>) }
                         {
                             dateMonth.map((dateMonth) => {
                                 if(dateNow === dateMonth){
-                                    return <li className={styles.activeDateToday}>{dateMonth}</li>
+                                    return <li key={dateMonth} className={styles.activeDateToday}>{dateMonth}</li>
                                 }
                                 else{
-                                    return <li className={styles.activeDate}>{dateMonth}</li>
+                                    return <li key={dateMonth} className={styles.activeDate}>{dateMonth}</li>
                                 }
                             })
                         }
-                        { dateNext.map((dateNext) => <li className={styles.inactiveDate}>{dateNext}</li>) }
+                        { dateNext.map((dateNext) => <li key={dateNext} className={styles.inactiveDate}>{dateNext}</li>) }
                     </ul>
                 </div>
             </div>

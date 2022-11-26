@@ -40,73 +40,78 @@ export const EmployeesInfo = (props) => {
                     </div>
                     <div className={styles.listEmployees}>
                         <table>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Departement</th>
-                                <th>Phone</th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <td>KU-123</td>
-                                <td>Muhammad Luqman Aristio</td>
-                                <td>Technology</td>
-                                <td>08123456789</td>
-                                <td className={styles.actionButton}>
-                                    <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                    <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>KU-123</td>
-                                <td>Muhammad Luqman Aristio</td>
-                                <td>Technology</td>
-                                <td>08123456789</td>
-                                <td>
-                                    <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                    <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>KU-123</td>
-                                <td>Muhammad Luqman Aristio</td>
-                                <td>Technology</td>
-                                <td>08123456789</td>
-                                <td>
-                                    <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen} /></Link>
-                                    <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>KU-123</td>
-                                <td>Muhammad Luqman Aristio</td>
-                                <td>Technology</td>
-                                <td>08123456789</td>
-                                <td>
-                                    <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                    <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>KU-123</td>
-                                <td>Muhammad Luqman Aristio</td>
-                                <td>Technology</td>
-                                <td>08123456789</td>
-                                <td>
-                                    <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                    <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>KU-123</td>
-                                <td>Muhammad Luqman Aristio</td>
-                                <td>Technology</td>
-                                <td>08123456789</td>
-                                <td>
-                                    <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                    <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                </td>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Departement</th>
+                                    <th>Phone</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>KU-123</td>
+                                    <td>Muhammad Luqman Aristio</td>
+                                    <td>Technology</td>
+                                    <td>08123456789</td>
+                                    <td className={styles.actionButton}>
+                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
+                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>KU-123</td>
+                                    <td>Muhammad Luqman Aristio</td>
+                                    <td>Technology</td>
+                                    <td>08123456789</td>
+                                    <td>
+                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
+                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>KU-123</td>
+                                    <td>Muhammad Luqman Aristio</td>
+                                    <td>Technology</td>
+                                    <td>08123456789</td>
+                                    <td>
+                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen} /></Link>
+                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>KU-123</td>
+                                    <td>Muhammad Luqman Aristio</td>
+                                    <td>Technology</td>
+                                    <td>08123456789</td>
+                                    <td>
+                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
+                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>KU-123</td>
+                                    <td>Muhammad Luqman Aristio</td>
+                                    <td>Technology</td>
+                                    <td>08123456789</td>
+                                    <td>
+                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
+                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>KU-123</td>
+                                    <td>Muhammad Luqman Aristio</td>
+                                    <td>Technology</td>
+                                    <td>08123456789</td>
+                                    <td>
+                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
+                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

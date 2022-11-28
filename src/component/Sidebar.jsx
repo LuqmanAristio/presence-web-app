@@ -6,8 +6,10 @@ import { faUser, faCalendarCheck } from '@fortawesome/free-regular-svg-icons'
 import { useLocation } from "react-router-dom";
 
 import profilImg from "../image/profile.png"
+import { useUser } from "./UserContext"
 
 export const Sidebar = () => {
+    const currentUser = useUser();
 
     const { pathname } = useLocation();
     const currentLocation = pathname.slice(1);
@@ -42,7 +44,7 @@ export const Sidebar = () => {
             <div className={styles.profilePart}>
                 <div className={styles.profilAdmin}>
                     <img src={profilImg} alt="adminImg"/>
-                    <h3>Luqman Aristio</h3>
+                    <h3>{currentUser.data.name}</h3>
                     <p>Admin</p>
                 </div>
             </div>

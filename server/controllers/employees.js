@@ -43,12 +43,12 @@ router.get('/:id', async (req, res) => {
 
 // Add new employee
 router.post('/', async (req, res) => {
-    const {name, departement} = req.body;
-    if(!name || !departement) {
-        return res.status(400).json({message: "parameters 'name' and 'departement' are required"});
+    const {name, email, departement, phone, address} = req.body;
+    if(!name || !departement || !phone) {
+        return res.status(400).json({message: "parameters 'name', 'email', 'departement', 'phone', and 'address' are required"});
     }
     try {
-        const employee = await Employee.create({name, departement});
+        const employee = await Employee.create({name, email, departement, phone, address, admin: req.admin.userId});
         return res.json({message: 'Employee created!', employee});
     } catch (err) {
         console.log(err.message);
@@ -71,13 +71,14 @@ router.delete('/:id', async (req, res) => {
 
 function getAdmin(req, res, next) {
     try {
-        const adminToken = req.headers['Authorization'].split(' ').at(-1);
+        const adminToken = req.headers['authorization'].split(' ').at(-1);
         const admin = jwt.verify(adminToken, process.env.JWT_SECRET);
         if(!admin) return res.status(401).json({message: 'Token is not a valid JWT or not a valid user', error: 'Invalid token'});
         req.admin = admin;
         next();
     } catch (err) {
-        return res.status(500).json({message: 'Server/database error', error: err.message});
+        console.log(err.message);
+        return res.status(500).json({message: 'Server token error', error: err.message});
     }
 }
 

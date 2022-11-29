@@ -5,8 +5,11 @@ import styles from '../style/Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { useUserUpdate } from '../component/UserContext';
 
-export const Login = ({setCurrentUser}) =>{
+export const Login = () =>{
+    const setCurrentUser = useUserUpdate();
+
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
@@ -27,7 +30,10 @@ export const Login = ({setCurrentUser}) =>{
                 {validateStatus: () => true}
             );
             if(response.status < 200 || response.status >= 300) return setError(response.data.message);
-            else setCurrentUser(response.data.token);
+            else {
+                const {token, user} = response.data;
+                setCurrentUser({token, data: user});
+            }
         } catch (err) {
             console.log('catched');
             setError('Server error:', err.message);

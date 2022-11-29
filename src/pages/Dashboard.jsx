@@ -3,7 +3,7 @@ import { Sidebar } from "../component/Sidebar";
 import { DashboardInfo } from "../component/DashboardInfo";
 import { DashboardSidebar } from "../component/DashboardSidebar";
 
-export const Dashboard = () =>{
+export const Dashboard = () => {
     return (
         <div className={styles.mainContent}>
             <Sidebar></Sidebar>

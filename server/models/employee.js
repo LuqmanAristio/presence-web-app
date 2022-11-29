@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import db from '../src/db.js';
 
-const User = db.define('User', {
-    userId: {
+const Employee = db.define('User', {
+    employeeId: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
@@ -14,7 +14,18 @@ const User = db.define('User', {
     departement: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [11, 11]
+        }
+    },
+    admin: {
+        type: DataTypes.UUID,
+        allowNull: false
     }
 });
 
-export default User;
+export default Employee;

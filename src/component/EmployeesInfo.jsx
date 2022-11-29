@@ -7,21 +7,21 @@ import { AddEmployees } from "./AddEmployeesForm"
 import { EditEmployees } from "./EditEmployees";
 import { DeleteBox } from "./DeleteBox";
 
-export const EmployeesInfo = (props) => {
+export const EmployeesInfo = () => {
 
     const [isShown, setIsShown] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
 
-    const handleClick = event => {
+    const handleClick = () => {
         setIsShown(current => !current);
     };
 
-    const updateForm = event => {
+    const updateForm = () => {
         setIsUpdate(current => !current);
     };
 
-    const deleteQues = event => {
+    const deleteForm = () => {
         setIsDelete(current => !current);
     };
 
@@ -58,7 +58,7 @@ export const EmployeesInfo = (props) => {
                                     <td>08123456789</td>
                                     <td className={styles.actionButton}>
                                         <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                        <Link className={styles.delete} onClick={deleteForm}><FontAwesomeIcon icon={faTrashCan}/></Link>
                                     </td>
                                 </tr>
                                 <tr>
@@ -68,7 +68,7 @@ export const EmployeesInfo = (props) => {
                                     <td>08123456789</td>
                                     <td>
                                         <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                        <Link className={styles.delete} onClick={deleteForm}><FontAwesomeIcon icon={faTrashCan}/></Link>
                                     </td>
                                 </tr>
                                 <tr>
@@ -78,7 +78,7 @@ export const EmployeesInfo = (props) => {
                                     <td>08123456789</td>
                                     <td>
                                         <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen} /></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                        <Link className={styles.delete} onClick={deleteForm}><FontAwesomeIcon icon={faTrashCan}/></Link>
                                     </td>
                                 </tr>
                                 <tr>
@@ -88,7 +88,7 @@ export const EmployeesInfo = (props) => {
                                     <td>08123456789</td>
                                     <td>
                                         <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                        <Link className={styles.delete} onClick={deleteForm}><FontAwesomeIcon icon={faTrashCan}/></Link>
                                     </td>
                                 </tr>
                                 <tr>
@@ -98,7 +98,7 @@ export const EmployeesInfo = (props) => {
                                     <td>08123456789</td>
                                     <td>
                                         <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                        <Link className={styles.delete} onClick={deleteForm}><FontAwesomeIcon icon={faTrashCan}/></Link>
                                     </td>
                                 </tr>
                                 <tr>
@@ -108,7 +108,7 @@ export const EmployeesInfo = (props) => {
                                     <td>08123456789</td>
                                     <td>
                                         <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
+                                        <Link className={styles.delete} onClick={deleteForm}><FontAwesomeIcon icon={faTrashCan}/></Link>
                                     </td>
                                 </tr>
                             </tbody>
@@ -133,7 +133,7 @@ export const EmployeesInfo = (props) => {
             {isDelete && (
                 <div>
                     <DeleteBox />
-                    <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={deleteQues}/>
+                    <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={deleteForm}/>
                 </div>
             )}
         </div>

@@ -4,7 +4,7 @@ import db from './db.js';
 import cors from 'cors';
 
 import adminsRouter from '../controllers/admins.js';
-import usersRouter from '../controllers/users.js';
+import employeesRouter from '../controllers/employees.js';
 import attendancesRouter from '../controllers/attendances.js';
 
 const PORT = process.env.PORT || 5000;
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/admins', adminsRouter);
-app.use('/api/users', usersRouter);
+app.use('/api/employees', employeesRouter);
 app.use('/api/attendances', attendancesRouter);
 
 app.listen(PORT, async () => {

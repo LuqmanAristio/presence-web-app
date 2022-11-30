@@ -2,26 +2,45 @@ import { Link } from "react-router-dom"
 import styles from "../style/Employees.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faPen, faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { AddEmployees } from "./AddEmployeesForm"
 import { EditEmployees } from "./EditEmployees";
 import { DeleteBox } from "./DeleteBox";
+import { useUser } from "./UserContext";
+import axios from "axios";
 
-export const EmployeesInfo = (props) => {
+export const EmployeesInfo = () => {
+    const currentUser = useUser();
 
     const [isShown, setIsShown] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [employees, setEmployees] = useState([]);
 
-    const handleClick = event => {
+    useEffect(() => {
+        async function fetchData() {
+            const serverURL = process.env.REACT_APP_SERVER_URL;
+            const response = await axios.get(`${serverURL}/api/employees`, {
+                headers: {
+                    Authorization: `Bearer ${currentUser.token}`
+                },
+                validateStatus: () => true
+            });
+            if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+            else setEmployees(response.data);
+        }
+        fetchData();
+    }, [currentUser, isShown, isUpdate, isDelete]);
+
+    const handleClick = () => {
         setIsShown(current => !current);
     };
 
-    const updateForm = event => {
+    const updateForm = () => {
         setIsUpdate(current => !current);
     };
 
-    const deleteQues = event => {
+    const deleteForm = () => {
         setIsDelete(current => !current);
     };
 
@@ -50,67 +69,18 @@ export const EmployeesInfo = (props) => {
                                 </tr>
                             </thead>
                             <tbody>
-
-                                <tr>
-                                    <td>KU-123</td>
-                                    <td>Muhammad Luqman Aristio</td>
-                                    <td>Technology</td>
-                                    <td>08123456789</td>
-                                    <td className={styles.actionButton}>
-                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>KU-123</td>
-                                    <td>Muhammad Luqman Aristio</td>
-                                    <td>Technology</td>
-                                    <td>08123456789</td>
-                                    <td>
-                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>KU-123</td>
-                                    <td>Muhammad Luqman Aristio</td>
-                                    <td>Technology</td>
-                                    <td>08123456789</td>
-                                    <td>
-                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen} /></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>KU-123</td>
-                                    <td>Muhammad Luqman Aristio</td>
-                                    <td>Technology</td>
-                                    <td>08123456789</td>
-                                    <td>
-                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>KU-123</td>
-                                    <td>Muhammad Luqman Aristio</td>
-                                    <td>Technology</td>
-                                    <td>08123456789</td>
-                                    <td>
-                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>KU-123</td>
-                                    <td>Muhammad Luqman Aristio</td>
-                                    <td>Technology</td>
-                                    <td>08123456789</td>
-                                    <td>
-                                        <Link className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></Link>
-                                        <Link className={styles.delete} onClick={deleteQues}><FontAwesomeIcon icon={faTrashCan}/></Link>
-                                    </td>
-                                </tr>
+                                {employees.map(employee => (
+                                    <tr key={employee.employeeId}>
+                                        <td>{employee.employeeId}</td>
+                                        <td>{employee.name}</td>
+                                        <td>{employee.departement}</td>
+                                        <td>{employee.phone}</td>
+                                        <td className={styles.actionButton}>
+                                            <button className={styles.update} onClick={updateForm}><FontAwesomeIcon icon={faPen}/></button>
+                                            <button className={styles.delete} onClick={deleteForm}><FontAwesomeIcon icon={faTrashCan}/></button>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
@@ -118,7 +88,7 @@ export const EmployeesInfo = (props) => {
             </div>
             {isShown && (
                 <div>
-                    <AddEmployees />
+                    <AddEmployees handleSave={handleClick} />
                     <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={handleClick}/>
                 </div>
             )}
@@ -133,7 +103,7 @@ export const EmployeesInfo = (props) => {
             {isDelete && (
                 <div>
                     <DeleteBox />
-                    <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={deleteQues}/>
+                    <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={deleteForm}/>
                 </div>
             )}
         </div>

@@ -3,9 +3,11 @@ import axios from 'axios';
 
 import styles from '../style/Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faUserTie, faLock, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useUserUpdate } from '../component/UserContext';
+
+import logo from '../image/presencelogo.png';
 
 export const Login = () =>{
     const setCurrentUser = useUserUpdate();
@@ -13,13 +15,16 @@ export const Login = () =>{
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState(false);
+
+    const [loading, setLoading] = useState('');
 
     const navigate = useNavigate();
 
     const handleSubmit = async e => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
         const serverURL = process.env.REACT_APP_SERVER_URL;
         const username = usernameRef.current.value;
@@ -29,7 +34,13 @@ export const Login = () =>{
                 {username, password},
                 {validateStatus: () => true}
             );
-            if(response.status < 200 || response.status >= 300) return setError(response.data.message);
+            if(response.status < 200 || response.status >= 300){
+                return setTimeout(() =>{
+                    setError(response.data.message)
+                    setLoading(false)
+                }, 2000);
+            }
+            
             else {
                 const {token, user} = response.data;
                 setCurrentUser({token, data: user});
@@ -45,23 +56,52 @@ export const Login = () =>{
     return(
         <div className={styles.loginContainer}>
             <div className={styles.loginBox}>
-                <h1>Welcome Back</h1>
-                <p>Enter your username and password</p>
-                {error && <p>{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <div className={styles.inputField}>
-                        <FontAwesomeIcon icon={faEnvelope} className={styles.ikonForm}/>
-                        <input type="text" placeholder="Enter your username" ref={usernameRef} className={styles.usernameField}/>
-                    </div>
-                    <div className={styles.inputField}>
-                        <FontAwesomeIcon icon={faLock} className={styles.ikonForm}/>
-                        <input type="password" placeholder="Enter your password" ref={passwordRef} className={styles.passwordField}/>
-                    </div>
-                    <button type="submit" className={styles.loginButton}>Sign In</button>
-                </form>
-            </div>
+                <div className={styles.leftLogin}>
+                    <div className={styles.titleLogin}>
+                        <h3>PRESENCE</h3>
 
-            <p className={styles.forgotText}>Forgot your password?<span><a href="/"> Contact Us</a></span></p>
+                        <h1>An artificial intelligence attendance system</h1>
+                        <p>Brand new system to help your company perform attendance automatically using machine learning</p>
+                    </div>
+                    <div className={styles.informationLink}>
+                        <div className={styles.emailInfo}>
+                            <h3>Get in touch with us</h3>
+                            <p>presence@company.com</p>
+                        </div>
+
+                        <FontAwesomeIcon icon={faArrowRight} className={styles.arrow}/>
+                    </div>
+                </div>
+                <div className={styles.rightLogin}>
+                    <div className={styles.logoText}>
+                        <img src={logo} alt="" />
+                        <h1>Welcome Back</h1>
+                        <p>Hello there, please fill in the form with your username and password</p>
+                    </div>
+                    <div className={styles.formLogin}>
+                        <form onSubmit={handleSubmit}>
+                            <div className={styles.formInput}>
+                                <input type="text" required="required" ref={usernameRef}/>
+                                <span className={styles.inputName}>Username</span>
+                                <span className={styles.iconForm}><FontAwesomeIcon icon={faUserTie} /></span>
+                            </div>
+                            <div className={styles.formInput}>
+                                <input type="password" required="required" ref={passwordRef}/>
+                                <span className={styles.inputName}>Password</span>
+                                <span className={styles.iconForm}><FontAwesomeIcon icon={faLock} /></span>
+                            </div>
+
+                            {error && <h4>{error}</h4>}
+
+                            {!loading && <button type="submit">Login</button>}
+                            {loading && <button type="submit"><div class={styles.loader}></div></button>}
+                            
+                        </form>
+                    </div>
+
+                    <h3>Forget your password?<span className={styles.contactUs}> Contact us</span></h3>
+                </div>
+            </div>
         </div>
     );
 };

@@ -12,12 +12,12 @@
 }
 
 .chartContent h1{
-    font-size: 1.4vw;
+    font-size: 1vw;
 }
 
 .attendanceChart{
     width: 100%;
-    height: 40%;
+    height: 50vh;
     margin-top: 1%;
 }
 

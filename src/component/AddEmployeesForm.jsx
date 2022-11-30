@@ -23,12 +23,13 @@ export const AddEmployees = ({handleSave}) =>{
             phone: phoneRef.current.value,
             address: addressRef.current.value,
         };
-        /*const response =*/ await axios.post(`${serverURL}/api/employees`, employeeData, {
+        const response = await axios.post(`${serverURL}/api/employees`, employeeData, {
             headers: {
                 Authorization: `Bearer ${currentUser.token}`
             },
             validateStatus: () => true
         });
+        console.log(response);
         handleSave();
     }
 

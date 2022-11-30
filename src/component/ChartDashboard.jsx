@@ -74,13 +74,8 @@ export const ChartDashboard = () =>{
 
     return(
         <div className={styles.chartContent}>
-            <h1>Overview</h1>
+            <h1>Attendance Overview</h1>
             <div className={styles.attendanceChart}>
-                <h3 className={styles.titleChart}>Attendance</h3>
-                <Line data={dataSource} options={option} className={styles.lineChart} height={110} width={600}/>
-            </div>
-            <div className={styles.absentChart}>
-                <h3 className={styles.titleChart}>Absent</h3>
                 <Line data={dataSource} options={option} className={styles.lineChart} height={110} width={600}/>
             </div>
         </div>

@@ -1,10 +1,11 @@
 import { DataTypes } from 'sequelize';
 import db from '../src/db.js';
+import { v4 as uuid } from 'uuid';
 
 const Employee = db.define('Employee', {
     employeeId: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        defaultValue: uuid(),
         primaryKey: true
     },
     name: {

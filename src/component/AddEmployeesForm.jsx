@@ -79,7 +79,8 @@ export const AddEmployees = ({handleSave}) =>{
                             </div>
                         </div>
 
-                        <button type="submit">Submit</button>
+                        <button type="submit" className={styles.confirmButton}>Add</button>
+                        <button className={styles.cancelButton} onClick={() => handleSave()}>Cancel</button>
                     </form>
                 </div>
             </div>

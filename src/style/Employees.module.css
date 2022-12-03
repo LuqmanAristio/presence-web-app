@@ -1,137 +1,430 @@
 .mainEmployees{
     width: 100%;
+    margin-left: 2%;
+    padding: 1% 0%;
 }
 
 .employeesContent{
-    width: 90%;
+    width: 98%;
     margin: 0 auto;
     position: relative;
+    height: 100%;
+    background-color: white;
+    padding: 3%;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    box-sizing: border-box
 }
 
-.topEmployees{
-    margin-top: 3%;
+.titleAdd{
     display: flex;
     justify-content: space-between;
 }
 
-.topEmployees h1{
-    font-size: 2vw;
-    color: #365E7D;
+.titleMenu h1{
+    color: #3F3E4B;
+    font-size: 1.8vw;
+    font-weight: 600;
 }
 
-.topEmployees a{
-    text-decoration: none;
-    background-color: #366D99;
+.titleMenu h2{
+    color: #9B9B9B;
+    font-size: 0.9vw;
+    font-weight: 600;
+}
+
+.addButton{
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addButton a{
     color: white;
-    font-weight: bold;
-    padding: 1% 5%;
-    font-size: 1vw;
-    height: fit-content;
-    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.2vw;
+    font-weight: 600;
+    padding: 3% 0%;
+    background-color: #3C37FF;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
 }
 
-.boxEmployees{
+.employeesDetail{
     width: 100%;
+    margin-top: 3%;
+    display: flex;
+    justify-content: space-between;
+    height: 82%;
+}
+
+.leftDetail{
+    width: 67%;
     display: flex;
     flex-direction: column;
-    background-color: white;
-    border-radius: 10px;
-    margin-top: 3%;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    justify-content: space-between;
 }
 
 .searchEmployees{
-    width: 95%;
-    margin: 0 auto;
-    padding: 2% 0%;
+    height: 30%;
+    background-color: white;
+    display: flex;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
 
-.ikonSearch{
-    position: absolute;
-    color: #878787;
-    opacity: 70%;
+.searchTitle{
+    width: 13%;
+    background-color: #3C37FF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.searchTitle h1{
+    font-weight: 600;
     font-size: 1.5vw;
-    margin: 1.2% 2%;
 }
 
-.searchEmployees input[type=text]{
-    width: 70%;
-    font-size: 1.2vw;
-    padding: 1% 2% 1% 9%;
+.searchForm{
+    width: 87%;
+    box-sizing: border-box;
+    padding: 1.5% 3.5%;
+}
+
+.searchTable{
+    width: 100%;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+.titleTable td{
+    font-size: 0.8vw;
+    font-weight: 600;
+    padding: 0.5% 0% 0.5% 0%;
+}
+
+.searchTable input{
+    width: 90%;
+    box-sizing: border-box;
     border: none;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 4% 3% 4% 8%;
+    font-size: 0.8vw;
+    border-radius: 5px;
     outline: none;
-    border-radius: 3px;
-    transition: 0.3s;
-    border: 1px solid rgba(201, 201, 201, .5);
-}
-
-.searchEmployees input[type=text]:focus{
-    transition: 0.3s;
-    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-}
-
-.searchEmployees ::placeholder{
+    color: #3F3E4B;
     font-weight: 500;
-    opacity: 50%;
 }
 
-.searchEmployees button{
-    width: 16%;
-    margin-left: 2%;
-    font-size: 1.2vw;
-    padding: 1% 0%;
+.searchTable select{
+    width: 90%;
+    box-sizing: border-box;
     border: none;
-    border-radius: 3px;
-    background-color: #366D99;
-    color: white;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 4% 3% 4% 8%;
+    font-size: 0.8vw;
+    border-radius: 5px;
+    outline: none;
+    color: #3F3E4B;
+    font-weight: 500;
+}
+
+::placeholder{
+    color: #C0C0C0;
+    font-weight: 500;
+}
+
+.searchTable tr td{
+    width: 31%;
+    box-sizing: border-box;
+}
+
+.titleTableSecond td{
+    padding: 2% 0% 0.5% 0%;
+    font-size: 0.8vw;
+    font-weight: 600;
+}
+
+.buttonForm{
+    width: 90%;
+}
+
+.clearButton{
+    width: 42%;
+    padding: 4% 0% 4% 0%;
+    font-size: 0.8vw;
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+    font-weight: 600;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    color: #3C37FF;
     cursor: pointer;
 }
 
-.listEmployees{
-    width: 100%;
+.submitButton{
+    padding: 4% 0% 4% 0%;
+    width: 42%;
+    font-size: 0.8vw;
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    background-color: #3C37FF;
+    color: white;
+    cursor: pointer;
+    margin-left: 6%;
 }
 
-.listEmployees table{
+.listEmployees{
+    height: 66%;
+    position: relative;
+}
+
+.tableList{
     width: 100%;
     border-collapse: collapse;
+    box-sizing: border-box;
 }
 
-table tr th{
-    padding: 2% 0%;
-    color: #365E7D;
-    font-size: 1.1vw;
-    border-top: 1px solid #EDEDED;
-    border-bottom: 1px solid #EDEDED;
+.tableList thead{
+    color: #686868;
+    font-size: 0.9vw;
 }
 
-table tr td{
-    border-top: 1px solid #EDEDED;
-    border-bottom: 1px solid #EDEDED;
-    color: #365E7D;
-    font-weight: 400;
+.tableList tr th{
+    background-color: #F6F5F8;
+}
+
+thead tr:first-child th:first-child { 
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+thead tr:first-child th:last-child { 
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px; 
+}
+
+.tableList thead tr th{
+    padding: 1% 0%;
     text-align: center;
-    padding: 1.7% 0%;
-    font-size: 1vw;
+    font-weight: 600;
 }
 
-.actionButton{
-    width: 15%;
+tbody tr td{
+    padding: 1% 0%;
+    text-align: center;
+    border-bottom: 1px solid #D9D9D9;
+    font-weight: 500;
+    font-size: 0.8vw;
+    color: #575A74;
 }
 
-.update{
-    background-color: green;
-    padding: 5% 7%;
-    margin-right: 2%;
+.activeEmp h5{
+    font-weight: 500;
+    font-size: 0.8vw;
     color: white;
+    border-radius: 5px;
+    width: 75%;
+    margin: 0 auto  ;
+    background-color: #1E7B16;
+    padding: 4% 0%;
+}
+
+.inactiveEmp h5{
+    font-weight: 500;
+    font-size: 0.8vw;
+    color: white;
+    border-radius: 5px;
+    width: 75%;
+    margin: 0 auto  ;
+    background-color: #F1693E;
+    padding: 4% 0%;
+}
+
+.unavailableEmp h5{
+    font-weight: 500;
+    font-size: 0.8vw;
+    color: white;
+    border-radius: 5px;
+    width: 75%;
+    margin: 0 auto  ;
+    background-color: #F80000;
+    padding: 4% 0%;
+}
+
+.buttonAction{
+    width: 17%;
+    box-sizing: border-box;
+}
+
+.buttonDelete{
+    width: 25%;
+    font-size: 0.8vw;
+    padding: 5% 0%;
+    border: none;
+    background-color: #CA2020;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buttonEdit{
+    color: white;
+    width: 25%;
+    font-size: 0.8vw;
+    padding: 5% 0%;
+    margin-right: 5%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #2520E3;
+}
+
+.paginationContent{
+    margin-left: auto;
+    padding: 1% 0%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+}
+
+.paginationContent h3{
+    color: #575A74;
+    font-size: 1vw;
+    font-weight: 600;
+}
+
+.paginationContent ul{
+    width: 75%;
+    text-align: right;
+    margin-right: 4%;
+}
+
+.paginationContent ul li{
+    list-style: none;
+    display: inline-flex;
+    width: 4.5%;
+    margin-right: 1%;
+}
+
+.activeButton{
+    font-size: 1.2vw;
+    width: 100%;
+    border: none;
+    color: white;
+    padding: 1% 0%;
+    background-color: #3C37FF;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.inactiveButton{
+    font-size: 1.2vw;
+    width: 100%;
+    border: none;
+    color: #575A74;
+    padding: 1% 0%;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hiddenButton{
+    display: none;
+}
+
+.showButton{
+    font-size: 1.2vw;
+    border: none;
+    width: 100%;
+    color: white;
+    padding: 1% 0%;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #575A74;
+}
+
+.rightDetail{
+    width: 30%;
+    box-sizing: border-box;
+    padding: 3% 3%;
+    background: rgb(60,55,255);
+    background: linear-gradient(195deg, rgba(60,55,255,1) 4%, rgba(18,15,128,1) 100%);
+    border-radius: 15px;
+}
+
+.rightDetail h1{
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.4vw;
+}
+
+.infoEmployees{
+    margin-top: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.infoBox{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: fit-content;
+    padding: 2% 3%;
+    box-sizing: border-box;
+}
+
+.infoBox ~ .infoBox{
+    margin-top: 7%;
+}
+
+.infoImage{
+    width: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    margin-left: 3%;
+    padding: 5% 0%;
+    border-radius: 10px;
+}
+
+.iconInfo{
+    background-color: white;
+    color: #2520E3;
+    font-size: 1.3vw;
+}
+
+.infoText{
+    margin-left: 6%;
+}
+
+.infoText h3{
+    color: white;
+    font-weight: 500;
     font-size: 1vw;
 }
 
-.delete{
-    background-color: red;
-    padding: 5% 8%;
-    margin-left: 2%;
-    font-size: 1vw;
+.infoText h5{
+    font-weight: 400;
     color: white;
+    font-size: 0.8vw;
 }
 
 .addEmployees{
@@ -214,6 +507,18 @@ table tr td{
     outline: none;
 }
 
+.form select{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6% 3% 6% 5%;
+    border: 1px solid rgba(201, 201, 201, .5);
+    border-radius: 5px;
+    font-size: 0.8vw;
+    margin-top: 2%;
+    transition: 0.5s;
+    outline: none;
+}
+
 .form input:focus{
     transition: 0.3s;
     box-shadow: 0 0 2px rgba(81, 203, 238, 1);
@@ -250,14 +555,27 @@ table tr td{
     font-weight: 500;
 }
 
-.rightEmployees button{
+.confirmButton{
     margin-top: 5%;
     border: none;
     background-color: #3C37FF;
     color: white;
     font-size: 1vw;
     padding: 2% 10%;
+    cursor: pointer;
     border-radius: 5px;
+}
+
+.cancelButton{
+    background-color: white;
+    color: #3C37FF;
+    font-size: 1vw;
+    cursor: pointer;
+    padding: 2% 8%;
+    border-radius: 5px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    margin-left: 3%;
 }
 
 .exitButton{
@@ -306,8 +624,10 @@ table tr td{
 
 .dialogBox h1{
     text-align: center;
-    font-size: 1.7vw;
+    font-size: 1.5vw;
+    font-weight: 600;
     margin: 3% 0%;
+    color: #3F3E4B;
 }
 
 .answerOption{

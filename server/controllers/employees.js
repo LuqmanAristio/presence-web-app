@@ -1,16 +1,29 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
+import { nanoid } from 'nanoid';
+import {Op} from 'sequelize';
 import Employee from '../models/employee.js';
 
 const router = express.Router();
 
 router.use(getAdmin);
 
-// Get all admin employees
+// Get all admin's employees (with search)
 router.get('/', async (req, res) => {
+    const {employeeId, name, phone, departement, status} = req.query;
+
+    const searchParams = {
+        admin: req.admin.userId,
+        employeeId: {[Op.like]: `%${employeeId ? employeeId : ''}%`},
+        name: {[Op.like]: `%${name ? name : ''}%`},
+        phone: {[Op.like]: `%${phone ? phone : ''}%`},
+        departement: {[Op.like]: `%${departement ? departement : ''}%`},
+        status
+    }
+
     try {
-        const employees = await Employee.findAll({where: {admin: req.admin.userId}});
+        const employees = await Employee.findAll({where: searchParams});
         return res.json(employees);
     } catch (err) {
         console.log(err.message);
@@ -29,33 +42,21 @@ router.get('/all', async (req, res) => {
     }
 });
 
-// Get employee by ID
-router.get('/:id', async (req, res) => {
-    try {
-        const employee = await Employee.findOne({where: {employeeId: req.params.id}});
-        if(!employee) return res.status(404).json({message: 'Employee not found'});
-        return res.json(employee);
-    } catch (err) {
-        console.log(err.message);
-        return res.status(500).json({message: 'Server/database error', error: err.message});
-    }
-});
-
 // Add new employee
 router.post('/', async (req, res) => {
-    const {name, email, departement, phone, address, status} = req.body;
-    if(!name || !email || !departement || !phone || !address || !status) {
-        return res.status(400).json({message: "parameters 'name', 'email', 'departement', 'phone', 'address', and 'status' are required"});
+    const {name, email, departement, phone, address} = req.body;
+    if(!name || !email || !departement || !phone || !address) {
+        return res.status(400).json({message: "parameters 'name', 'email', 'departement', 'phone', and 'address' are required"});
     }
     try {
         const employee = await Employee.create({
+            employeeId: nanoid(7),
             name,
             email,
             departement,
             phone,
             address,
             admin: req.admin.userId,
-            status
         });
         return res.json({message: 'Employee created!', employee});
     } catch (err) {

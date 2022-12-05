@@ -1,4 +1,6 @@
 import express from 'express';
+
+import { nanoid } from 'nanoid';
 import Admin from '../models/admin.js';
 
 import jwt from 'jsonwebtoken';
@@ -37,7 +39,7 @@ router.post('/register', async (req, res) => {
     }
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const admin = await Admin.create({name, departement, username, password: hashedPassword});
+        const admin = await Admin.create({userId: nanoid(7), name, departement, username, password: hashedPassword});
         return res.json({message: 'Admin created!', admin});
     } catch (err) {
         console.log(err.message);

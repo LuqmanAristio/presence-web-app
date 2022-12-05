@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import styles from "../style/Employees.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faUsersGear, faBuilding, faUserCheck, faUserXmark, faUserClock } from '@fortawesome/free-solid-svg-icons';
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import { AddEmployees } from "./AddEmployeesForm"
 import { EditEmployees } from "./EditEmployees";
 import { DeleteBox } from "./DeleteBox";
@@ -15,27 +15,54 @@ import { List } from "./ListEmployees";
 export const EmployeesInfo = () => {
     const currentUser = useUser();
 
+    const idRef = useRef('');
+    const nameRef = useRef('');
+    const phoneRef = useRef('');
+    const departementRef = useRef('');
+
     const [isShown, setIsShown] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [employees, setEmployees] = useState([]);
 
-    const [employeesInfo, setData] = useState();
+    const [employeesInfo, setData] = useState(null);
+
+    const [status, setStatus] = useState('active');
+
+    async function fetchData(params = {status}) {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/employees`, {
+            params,
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        else setEmployees(response.data);
+    }
 
     useEffect(() => {
-        async function fetchData() {
-            const serverURL = process.env.REACT_APP_SERVER_URL;
-            const response = await axios.get(`${serverURL}/api/employees`, {
-                headers: {
-                    Authorization: `Bearer ${currentUser.token}`
-                },
-                validateStatus: () => true
-            });
-            if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
-            else setEmployees(response.data);
-        }
         fetchData();
     }, [currentUser, isShown, isUpdate, isDelete]);
+
+
+    const handleStatusSearchChange = e => {
+        setStatus(e.target.value);
+    }
+
+    const handleSearchSubmit = e => {
+        e.preventDefault();
+        console.log(status);
+        const searchParams = {
+            employeeId: idRef.current.value,
+            name: nameRef.current.value,
+            phone: phoneRef.current.value,
+            departement: departementRef.current.value,
+            status
+        }
+        fetchData(searchParams);
+    }
 
     const handleClick = () => {
         setIsShown(current => !current);
@@ -97,7 +124,7 @@ export const EmployeesInfo = () => {
                                 <h1>Filter</h1>
                             </div>
                             <div className={styles.searchForm}>
-                                <form action="">
+                                <form action="" onSubmit={handleSearchSubmit}>
                                     <table className={styles.searchTable}>
                                         <tr className={styles.titleTable}>
                                             <td>ID</td>
@@ -105,9 +132,9 @@ export const EmployeesInfo = () => {
                                             <td>Phone</td>
                                         </tr>
                                         <tr>
-                                            <td><input type="text" name="" placeholder="Ex : 1122334" /></td>
-                                            <td><input type="text" name="" placeholder="Ex : Aris Ganteng" /></td>
-                                            <td><input type="number" name="" placeholder="Ex : 0812345678" /></td>
+                                            <td><input ref={idRef} type="text" name="" placeholder="Ex : 1122334" /></td>
+                                            <td><input ref={nameRef} type="text" name="" placeholder="Ex : Aris Ganteng" /></td>
+                                            <td><input ref={phoneRef} type="number" name="" placeholder="Ex : 0812345678" /></td>
                                         </tr>
                                         <tr className={styles.titleTableSecond}>
                                             <td>Departement</td>
@@ -115,12 +142,12 @@ export const EmployeesInfo = () => {
                                             <td></td>
                                         </tr>
                                         <tr>
-                                            <td><input type="text" name="" placeholder="Ex : Informatic" /></td>
+                                            <td><input ref={departementRef} type="text" name="" placeholder="Ex : Informatics" /></td>
                                             <td>
-                                                <select>
-                                                    <option>Active</option>
-                                                    <option>Inactive</option>
-                                                    <option>Unavailable</option>
+                                                <select defaultValue={'active'} onChange={handleStatusSearchChange}>
+                                                    <option value='active'>Active</option>
+                                                    <option value='inactive'>Inactive</option>
+                                                    <option value='unavailable'>Unavailable</option>
                                                 </select>
                                             </td>
                                             <td className={styles.buttonForm}>

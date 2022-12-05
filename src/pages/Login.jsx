@@ -94,7 +94,7 @@ export const Login = () =>{
                             {error && <h4>{error}</h4>}
 
                             {!loading && <button type="submit">Login</button>}
-                            {loading && <button type="submit"><div class={styles.loader}></div></button>}
+                            {loading && <button type="submit"><div className={styles.loader}></div></button>}
                             
                         </form>
                     </div>

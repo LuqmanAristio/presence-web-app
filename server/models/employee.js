@@ -1,11 +1,9 @@
 import { DataTypes } from 'sequelize';
-import { v4 as uuid } from 'uuid';
 import db from '../src/db.js';
 
 const Employee = db.define('Employee', {
     employeeId: {
-        type: DataTypes.UUID,
-        defaultValue: uuid(7),
+        type: DataTypes.STRING,
         primaryKey: true
     },
     name: {
@@ -27,7 +25,7 @@ const Employee = db.define('Employee', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            len: [11, 11]
+            min: 8
         }
     },
     address: {
@@ -41,6 +39,7 @@ const Employee = db.define('Employee', {
     status: {
         type: DataTypes.ENUM('active', 'inactive', 'unavailable'),
         allowNull: false,
+        defaultValue: 'active'
     }
 });
 

@@ -1,4 +1,5 @@
-import { useState, createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
+import { useSessionStorage } from './useSessionStorage';
 
 const UserContext = createContext();
 const UserUpdateContext = createContext();
@@ -12,7 +13,7 @@ export function useUserUpdate() {
 }
 
 export function UserProvider({ children }) {
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useSessionStorage('user', null);
     return (
         <UserContext.Provider value={currentUser}>
             <UserUpdateContext.Provider value={setCurrentUser}>

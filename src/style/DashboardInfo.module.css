@@ -4,90 +4,271 @@
 }
 
 .mainDashboard{
-    width: 70.5%;
+    width: 100%;
     display: flex;
+    margin-left: 3%;
+    padding: 1% 0%;
 }
 
 .dashboardContent{
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    width: 70%;
+    background-color: white;
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding: 3%;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    box-sizing: border-box;
+}
+
+.dashboardContent h1{
+    color: #3F3E4B;
+    font-size: 1.8vw;
+    font-weight: 600;
+}
+
+.dashboardContent h2{
+    color: #9B9B9B;
+    font-size: 0.9vw;
+    font-weight: 600;
+}
+
+.boxInfo{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.attendanceInfo{
+    display: flex;
+    margin-top: 5%;
+    justify-content: space-between;
+}
+
+.infoValue{
+    display: flex;
+    width: 23%;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 2% 3%;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.iconValue{
+    text-align: center;
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
-.mainDashboard h2{
-    font-size: 1.1vw;
-    font-weight: 400;
-    color: #4A80AA;
-    margin-top: 3%;
+.icon{
+    border-radius: 50%;
+    color: white;
+    font-size: 1.4vw;
+    padding: 1vw 0.8vw;
 }
 
-.mainDashboard h1{
-    font-size: 2vw;
-    color: #365E7D;
+.iconAtt{
+    background-color: #3C37FF;
 }
 
-.presentDay{
-    display: flex;
+.iconOn{
+    background-color: #29E731;
+}
+
+.iconLate{
+    background-color: #FF5555;
+}
+
+.iconAbs{
+    background-color: #C21818;
+}
+
+.textInfo{
+    width: 65%;
+    margin-left: 10%;
+}
+
+.textInfo h1{
+    color: #2C2C31;
+    font-size: 1.5vw;
+}
+
+.textInfo h3{
+    color: #4B4B4B;
+    font-size: 0.9vw;
+    font-weight: 500;
+}
+
+.textInfo p{
+    color: #9B9B9B;
+    font-size: 0.6vw;
+}
+
+.chartInfo{
     width: 100%;
-    height: 6%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
     margin-top: 3%;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 2% 3%;
+    border-radius: 10px;
+    height: 65%;
 }
 
-.todayPre{
-    width: fit-content;
-    margin-top: auto;
+.chartInfo h5{
+    font-size: 1.3vw;
+    font-weight: 600;
+    color: #3F3E4B;
 }
 
-.todayPre a{
-    padding: 4% 3vw; 
-    background-color: #4A80AA;
-    text-decoration: none;
-    color: white;
-    border-radius: 5px;
-    font-size: 0.8vw;
-}
-
-.yesPre{
-    width: fit-content;
-    margin-left: 20px;
-    margin-top: auto;
-}
-
-.yesPre a{
-    padding: 3.5% 3vw; 
-    background-color: #4A80AA;
-    text-decoration: none;
-    color: white;
-    border-radius: 5px;
-    font-size: 0.8vw;
-}
-
-.infoBox{
-    margin-top: 2%;
+.dashboardSidebar{
+    width: 28%;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.calendarInfo{
+    width: 100%;
+    height: 49%;
+    background: rgb(60,55,255);
+    border-radius: 30px;
+    box-sizing: border-box;
+    padding: 5% 8%;
+    /* position: relative; */
+    background: linear-gradient(184deg, rgba(60,55,255,1) 10%, rgba(18,15,128,1) 100%);
+}
+
+.calendarInfo h1{
+    font-weight: 700;
+    font-size: 1.7vw;
+    margin-top: 3%;
+    margin-left: 3%;
+}
+
+.calendarInfo h3{
+    font-weight: 500;
+    color: white;
+    font-size: 0.9vw;
+    margin-top: 10%;
+    margin-left: 3%;
+}
+
+.dateInfo{
+    margin-top: 5%;
+}
+
+.dateInfo ul{
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.dateInfo ul li{
+    width: calc(100% / 7);
+    text-align: center;
+    padding: 1% 0px;
+    font-size: 0.8vw;
+}
+
+.dayName{
+    font-weight: 500;
+    color: white;
+}
+
+.dateNum li{
+    margin-top: 2%;
+}
+
+.activeDate{
+    color: white;
+}
+
+.activeDateToday{
+    background-color: white;
+    border-radius: 20px;
+    color: #3C37FF;
+}
+
+.inactiveDate{
+    color: white;
+    opacity: 60%;
+}
+
+.recentInfo{
     background-color: white;
     width: 100%;
-    justify-content: center;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    flex-wrap: wrap;
-    padding: 3% 0%;
+    box-sizing: border-box;
+    height: 49%;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    padding: 8% 8%;
 }
 
-.infoValue~.infoValue{
-    margin-left: 18%;
-}
-
-.infoValue h1{
-    font-size: 2vw;
+.recentInfo h1{
     font-weight: 700;
+    font-size: 1.5vw;
+    color: #3F3E4B;
+    margin-bottom: 13%;
+    margin-left: 3%;
 }
 
-.infoValue h3{
+.recentList{
+    display: flex;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.recentList~.recentList{
+    margin-top: 13%;
+}
+
+.imageList{
+    width: 20%;
+    display: flex;
+    align-items: center;
+}
+
+.imageList img{
+    width: 70%;
+}
+
+.nameList{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1%;
+    width: 50%;
+}
+
+.nameList h3{
+    color: #3F3E4B;
+    font-weight: 600;
     font-size: 1vw;
+}
+
+.nameList h4{
+    color: #9B9B9B;
     font-weight: 500;
-    color: #4A80AA;
+    font-size: 0.8vw;
+}
+
+.timeList{
+    width: 29%;
+    display: flex;
+    align-items: center;
+}
+
+.timeList h3{
+    color: #436885;
+    font-weight: 600;
+    font-size: 0.9vw;
+    margin-left: auto;
 }

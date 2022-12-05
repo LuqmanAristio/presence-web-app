@@ -3,7 +3,8 @@ import styles from "../style/Employees.module.css"
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const DeleteBox = () =>{
+export const DeleteBox = ({data, deleteForm}) =>{
+    
     return(
         <div className={styles.deleteBox}>
             <div className={styles.dialogBox}>
@@ -12,7 +13,7 @@ export const DeleteBox = () =>{
 
                 <div className={styles.answerOption}>
                     <Link className={styles.yesAnswer}>Yes</Link>
-                    <Link className={styles.noAnswer}>No</Link>
+                    <Link className={styles.noAnswer} onClick={() => deleteForm()}>No</Link>
                 </div>
             </div>
         </div>

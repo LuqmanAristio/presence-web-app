@@ -5,20 +5,18 @@
 
 .chartContent{
     width: 100%;
-    height: 70%;
-    display: flex;
-    flex-direction: column;
-    margin-top: 5%;
+    height: 85%;
+    margin-top: 2%;
 }
 
 .chartContent h1{
-    font-size: 1.4vw;
+    font-size: 1vw;
 }
 
 .attendanceChart{
     width: 100%;
-    height: 40%;
     margin-top: 1%;
+    height: 100%;
 }
 
 .attendanceChart h3{

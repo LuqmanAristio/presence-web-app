@@ -6,19 +6,29 @@ import styles from "../style/Chart.module.css"
 
 export const ChartDashboard = () =>{
 
-    const dataSource = ({
+    
+
+    const dataSource = () => ({
         labels: DataSource.map((data) => data.day),
         datasets: [
           {
             label: "Total User",
             data: DataSource.map((data) => data.userAtt),
-            borderColor : 'rgba(54, 94, 125, 1)',
-            backgroundColor: 'rgba(54, 94, 125, 1)',
-            pointBackgroundColor : 'rgba(54, 94, 125, 1)',
+            borderColor : 'rgba(76, 71, 230, 1)',
+            backgroundColor: 'rgba(60, 55, 255, 1)',
+            pointBackgroundColor : 'rgba(60, 55, 255, 1)',
             borderJoinStyle : 'round',
             fill: {
                 target: 'origin',
-                above: 'rgba(54, 94, 125, 0.4)',
+                above: () => {
+                  var ctx = document.getElementById("lineChart").getContext("2d");
+                  const gradient = ctx.createLinearGradient(0, 100, 0, 500);
+                  gradient.addColorStop(0, "rgba(76, 71, 230, 0.9)");
+                  gradient.addColorStop(0.4, "rgba(76, 71, 230, 0.7)");
+                  gradient.addColorStop(0.7, "rgba(76, 71, 230, 0.3)");
+                  gradient.addColorStop(1, "rgba(60, 55, 255, 0.2)");
+                  return gradient;
+                },
             },
             tension : 0.4,
             pointBorderWidth : 7,
@@ -45,10 +55,11 @@ export const ChartDashboard = () =>{
                         var size = Math.round(width / 74);
                          return {
                            size: size,
-                          weight: 600
+                          weight: 600,
+                          family : "Poppins",
                         };
                       },
-                    color : 'rgba(54, 94, 125, 1)',
+                    color : 'rgba(63, 62, 75, 1)',
                 },
 
                 min : 1000,
@@ -57,13 +68,14 @@ export const ChartDashboard = () =>{
 
             x: {
                 ticks: {
-                    color : 'rgba(54, 94, 125, 1)',
+                    color : 'rgba(63, 62, 75, 1)',
                     font: function(context) {
                         var width = context.chart.width;
                         var size = Math.round(width / 64);
                          return {
                            size: size,
-                          weight: 600
+                          weight: 600,
+                          family : "Poppins",
                         };
                       },
                     padding : 10,
@@ -74,14 +86,8 @@ export const ChartDashboard = () =>{
 
     return(
         <div className={styles.chartContent}>
-            <h1>Overview</h1>
             <div className={styles.attendanceChart}>
-                <h3 className={styles.titleChart}>Attendance</h3>
-                <Line data={dataSource} options={option} className={styles.lineChart} height={110} width={600}/>
-            </div>
-            <div className={styles.absentChart}>
-                <h3 className={styles.titleChart}>Absent</h3>
-                <Line data={dataSource} options={option} className={styles.lineChart} height={110} width={600}/>
+                <Line data={dataSource()} options={option} className={styles.lineChart} id="lineChart" height={110} width={600}/>
             </div>
         </div>
     )

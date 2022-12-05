@@ -5,110 +5,237 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #F2F6FF;
+  background-image: url('../image/backgroundLogin.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .loginBox{
   background-color: white;
-  width: 40%;
-  height: fit-content;
-  border-radius: 10px;
+  width: 65%;
+  border-radius: 20px;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.leftLogin{
+  width: 60%;
+  background-color: #3C37FF;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 3% 0%;
+  border-radius: 20px 0px 0px 20px;
+  padding: 7% 0%;
 }
 
-.loginBox h1{
-  color: #365E7D;
-  text-align: center;
-  font-size: 1.6vw;
-}
-
-.loginBox p{
-  color: #365E7D;
-  opacity: 80%;
-  font-size: 1.2vw;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 4%;
-}
-
-.loginBox form{
-  width: 80%;
-}
-
-.inputField{
-  display: flex;
-  width: 100%;
-  margin-top: 3%;
-  align-items: center;
-}
-
-.ikonForm{
-  position: absolute;
-  font-size: 1.8vw;
-  color: #4A80AA;
-  margin-left: 2.5%;
-}
-
-.inputField input[type=text], input[type=password]{
-  width: 100%;
-  padding: 1vw 1vw 1vw 6vw;
-  font-size: 1.1vw;
-  border: 1px solid rgba(201, 201, 201, .5);
-  border-radius: 10px;
-  transition: 0.5s;
-  outline: none;
-  color: #365E7D;
-}
-
-.inputField input[type=text]:focus, input[type=password]:focus{
-  transition: 0.3s;
-  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-}
-
-.inputField ::placeholder{
-  font-weight: 500;
-  opacity: 80%;
-}
-
-.loginButton{
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  background-color: #4A80AA;
+.titleLogin h3, h1{
   color: white;
-  border: none;
-  padding: 1vw 0px;
-  border-radius: 10px;
+}
+
+.titleLogin h3{
+  margin: 0% 0% 0% 8%;
+  font-size: 1.5vw;
+}
+
+.titleLogin h1{
+  margin: 15% 0% 0% 8%;
+  font-size: 2.7vw;
+}
+
+.titleLogin p{
+  color: #E1E3FF;
+  margin: 3% 10% 0% 8%;
   font-size: 1.3vw;
-  margin-top: 3%;
+}
+
+.informationLink{
+  width: 84%;
+  background-color: #2520E3;
+  margin: 0 auto;
+  margin-top: 12%;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+}
+
+.emailInfo{
+  width: 70%;
+  padding: 4% 10%;
+}
+
+.emailInfo h3{
+  color: white;
+  font-size: 1.2vw;
+}
+
+.emailInfo p{
+  color: #D4DCFF;
+  font-size: 1vw;
+  margin-top: 2%;
+}
+
+.arrow{
+  color: white;
+  font-size: 2vw;
+  width: 30%;
+}
+
+.rightLogin{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.logoText{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15%;
+}
+
+.logoText img{
+  width: 15%;
+}
+
+.logoText h1{
+  color: #3F3E4B;
+  text-align: center;
+  margin: 5% 0% 2% 0%;
+  font-size: 1.8vw;
+}
+
+.logoText p{
+  font-size: 1vw;
+  color: #6F6F6F;
+  text-align: center;
+}
+
+.formLogin{
+  width: 81%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 7%;
+}
+
+.formInput~.formInput{
+  width: 100%;
+  margin-top: 7%;
+}
+
+.formInput input{
+  width: 100%;
+  background-color: #F9FAFE;
+  outline: none;
+  border: 0.5px solid #D9D9D9;
+  padding: 4% 16% 4% 8%;
+  box-sizing: border-box;
+  font-size: 0.9vw;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: 0.5s;
+}
+
+.formInput span{
+  position: absolute;
+}
+
+.inputName{
+  left: 0;
+  font-size: 0.9vw;
+  margin: 4% 16% 4% 8%;
+  font-weight: 500;
+  color: #B6B7BF;
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.iconForm{
+  right: 0;
+  font-size: 1.3vw;
+  color: #B6B7BF;
+  padding: 3% 6% 4% 0%;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.formInput input:valid ~ .inputName,
+.formInput input:focus ~ .inputName{
+  color: #3C37FF;
+  transform: translateX(-5%) translateY(-130%);
+  font-size: 0.7vw;
+  padding: 0% 1%;
+  border-radius: 5px;
+  background: linear-gradient(to top, #F9FAFE 50%, white 50%);
+}
+
+.formInput input:valid ,
+.formInput input:focus{
+  border: 1px solid #3C37FF;
+}
+
+.formInput input:valid ~ .iconForm,
+.formInput input:focus ~ .iconForm{
+  color: #3C37FF;
+  transition: 0.5s;
+}
+
+.formLogin button{
+  margin-top: 10%;
+  width: 100%;
+  font-size: 1vw;
+  padding: 4%;
+  border: none;
+  background-color: #285AC4;
+  color: white;
+  font-weight: 500;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
 }
 
-.linkSubmit{
-  text-decoration: none;
+.formLogin h4{
+  color: #e74c3c;
+  margin: 3% 0% 0% 0%;
+  font-size: 0.8vw;
 }
 
-.loginButton:hover{
-  transition: 0.3s;
-  background-color: #366D99;
+.rightLogin h3{
+  position: absolute;
+  color: #9D9D9D;
+  bottom: 0;
+  text-align: center;
+  margin-bottom: 5%;
+  font-weight: 500;
+  font-size: 0.9vw;
 }
 
-.forgotText{
-  color: #365E7D;
-  opacity: 80%;
-  font-size: 1vw;
-  margin-top: 1.5%;
+.contactUs{
+  color: #3C37FF;
+  font-weight: 700;
 }
 
-.forgotText span a{
-  font-weight: bold;
-  color: #365E7D;
-  font-size: 1vw;
-  text-decoration: none;
+.loader{
+  pointer-events: none;
+  width: 1vw;
+  height: 1vw;
+  font-weight: 500;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 0.25vw solid transparent;
+  border-top-color: white;
+  animation: an1 1s ease infinite;
 }
+
+@keyframes an1 {
+  0%{
+    transform: rotate(0turn);
+  }
+  100%{
+    transform: rotate(1turn);
+  }
+}
+ 

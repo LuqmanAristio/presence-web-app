@@ -62,7 +62,10 @@ router.post('/login', async (req, res) => {
 // Delete admin by ID
 router.delete('/:id', async (req, res) => {
     try {
-        const admin = await Admin.findOne({where: {userId: req.params.id}});
+        const admin = await Admin.findOne({
+            where: {userId: req.params.id},
+            attributes: {exclude: ['password']}
+        });
         if(!admin) return res.status(404).json({message: 'Admin not found'});
         await admin.destroy();
         return res.json({message: 'Admin deleted', admin});

@@ -43,18 +43,48 @@ router.get('/:id', async (req, res) => {
 
 // Add new employee
 router.post('/', async (req, res) => {
-    const {name, email, departement, phone, address} = req.body;
-    if(!name || !departement || !phone) {
-        return res.status(400).json({message: "parameters 'name', 'email', 'departement', 'phone', and 'address' are required"});
+    const {name, email, departement, phone, address, status} = req.body;
+    if(!name || !email || !departement || !phone || !address || !status) {
+        return res.status(400).json({message: "parameters 'name', 'email', 'departement', 'phone', 'address', and 'status' are required"});
     }
     try {
-        const employee = await Employee.create({name, email, departement, phone, address, admin: req.admin.userId});
+        const employee = await Employee.create({
+            name,
+            email,
+            departement,
+            phone,
+            address,
+            admin: req.admin.userId,
+            status
+        });
         return res.json({message: 'Employee created!', employee});
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({message: 'Server/database error', error: err.message});
     }
 });
+
+// Edit employee by ID
+router.put('/:id', async (req, res) => {
+    const {name, email, departement, phone, address, status} = req.body;
+    if(!name || !email || !departement || !phone || !address || !status) {
+        return res.status(400).json({message: "parameters 'name', 'email', 'departement', 'phone', 'address', and 'status' are required"});
+    }
+    try {
+        const employee = await Employee.update({
+            name,
+            email,
+            departement,
+            phone,
+            address,
+            status
+        }, {where: {employeeId: req.params.id, admin: req.admin.userId}});
+        return res.json({message: 'Employee updated!', employee});
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({message: 'Server/database error', error: err.message});
+    }
+})
 
 // Delete employee by ID
 router.delete('/:id', async (req, res) => {

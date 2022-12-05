@@ -12,7 +12,7 @@ export const AttendanceChecker = () =>{
     const getVideo = () =>{
         navigator.mediaDevices
             .getUserMedia({ 
-                video: { width : 500, height: 600}
+                video: { width : 500, height: 500}
             })
             .then(stream => {
                 let video = videoRef.current;
@@ -25,8 +25,8 @@ export const AttendanceChecker = () =>{
     }
 
     const takePhoto = () =>{
-        const width = 700;
-        const height = 800;
+        const width = 500;
+        const height = 500;
 
         let video = videoRef.current;
         let photo = photoRef.current;
@@ -61,11 +61,13 @@ export const AttendanceChecker = () =>{
 
                     <h2>Muhammad Luqman Aristio</h2>
 
-                    <h3>CHECKED : ON TIME</h3>
+                    <h3 className={styles.ontimeCheck}>CHECKED : ON TIME</h3>
                 </div>
                 <div className={styles.cameraPart}>
                     <div className={styles.cameraVideo}>
-                        <video ref={videoRef}></video>
+                        <video ref={videoRef}>
+
+                        </video>
                     </div>
                     <div className={'result' + (hasPhoto ? 'hasPhoto' : '')} id={styles.buttonPhoto}>
                          <canvas ref={photoRef} hidden id="my-canvas"></canvas>

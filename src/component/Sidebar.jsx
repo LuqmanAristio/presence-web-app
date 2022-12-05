@@ -14,8 +14,8 @@ import attendanceActive from "../image/attendance-active.png"
 import attendance from "../image/attendance.png"
 import report from "../image/report.png"
 import reportActive from "../image/report-active.png"
-import setting from "../image/setting.png"
-import settingActive from "../image/setting-active.png"
+import logout from "../image/logout.png"
+import logoutActive from "../image/logout-active.png"
 import { useUser } from "./UserContext"
 
 export const Sidebar = () => {
@@ -44,13 +44,13 @@ export const Sidebar = () => {
                     <img src={currentLocation === "attendance" ? attendanceActive : attendance} alt="" />
                     <h3><Link to="/attendance">Attendance</Link></h3>
                 </div>
-                <div className={currentLocation === "databases" ? styles.active : styles.inactiveMenu}>
-                    <img src={currentLocation === "databases" ? reportActive : report} alt="" />
-                    <h3><Link to="/databases">Report</Link></h3>
+                <div className={currentLocation === "reports" ? styles.active : styles.inactiveMenu}>
+                    <img src={currentLocation === "reports" ? reportActive : report} alt="" />
+                    <h3><Link to="/reports">Report</Link></h3>
                 </div>
-                <div className={currentLocation === "setting" ? styles.active : styles.inactiveMenu}>
-                    <img src={currentLocation === "setting" ? settingActive : setting} alt="" />
-                    <h3><Link to="/databases">Setting</Link></h3>
+                <div className={currentLocation === "logout" ? styles.active : styles.inactiveMenu}>
+                    <img src={currentLocation === "logout" ? logoutActive : logout} alt="" />
+                    <h3><Link to="">Logout</Link></h3>
                 </div>
                 
             </div>

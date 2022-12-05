@@ -1,0 +1,75 @@
+.mainReport{
+    width: 100%;
+    margin-left: 2%;
+    padding: 1% 0%;
+}
+
+.reportContent{
+    width: 98%;
+    margin: 0 auto;
+    position: relative;
+    height: 100%;
+    background-color: white;
+    padding: 3%;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    box-sizing: border-box
+}
+
+.reportContent h1{
+    color: #3F3E4B;
+    font-size: 1.8vw;
+    font-weight: 600;
+}
+
+.reportContent h2{
+    color: #9B9B9B;
+    font-size: 0.9vw;
+    font-weight: 600;
+}
+
+.containerReport{
+    width: 100%;
+    height: 82%;
+    display: flex;
+    margin-top: 3%;
+    justify-content: space-between;
+}
+
+.leftReport{
+    width: 30%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 20px;
+}
+
+.rightReport{
+    width: 68%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.topReport{
+    display: flex;
+    height: 80%;
+    justify-content: space-between;
+}
+
+.topBox{
+    width: 49%;
+    background: linear-gradient(184deg, rgba(60,55,255,1) 10%, rgba(18,15,128,1) 100%);
+    border-radius: 20px;
+}
+
+.botReport{
+    height: 18%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.botBox{
+    height: 100%;
+    width: 32%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 10px;
+}

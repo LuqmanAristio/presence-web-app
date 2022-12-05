@@ -23,8 +23,9 @@ export const EmployeesInfo = () => {
     const [isShown, setIsShown] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
-    const [employees, setEmployees] = useState([]);
 
+    const [employees, setEmployees] = useState([]);
+    const [employeesSummary, setEmployeesSummary] = useState(null);
     const [employeesInfo, setData] = useState(null);
 
     const [status, setStatus] = useState('active');
@@ -42,8 +43,22 @@ export const EmployeesInfo = () => {
         else setEmployees(response.data);
     }
 
+    async function fetchEmployeesSummary() {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/employees/info`, {
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        setEmployeesSummary(response.data);
+        console.log(employeesSummary);
+    }
+
     useEffect(() => {
         fetchData();
+        fetchEmployeesSummary();
     }, [currentUser, isShown, isUpdate, isDelete]);
 
 
@@ -184,7 +199,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Employees</h3>
-                                    <h5>1300 Persons</h5>
+                                    <h5>{employeesSummary && employeesSummary.total} Persons</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -193,7 +208,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Department</h3>
-                                    <h5>10 Departmens</h5>
+                                    <h5>{employeesSummary && employeesSummary.departementCount} Departmens</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -202,7 +217,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Active Employees</h3>
-                                    <h5>1200 Persons</h5>
+                                    <h5>{employeesSummary && employeesSummary.statusCount.active} Persons</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -211,7 +226,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Inactive Employees</h3>
-                                    <h5>60 Persons</h5>
+                                    <h5>{employeesSummary && employeesSummary.statusCount.inactive} Persons</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -220,7 +235,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Unavailable Employees</h3>
-                                    <h5>40 Persons</h5>
+                                    <h5>{employeesSummary && employeesSummary.statusCount.unavailable} Persons</h5>
                                 </div>
                             </div>
                         </div>

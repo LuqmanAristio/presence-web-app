@@ -42,6 +42,23 @@ router.get('/all', async (req, res) => {
     }
 });
 
+// Get employees information
+router.get('/info', async (req, res) => {
+    try {
+        const employees = await Employee.findAll({where: {admin: req.admin.userId}});
+        const statusCount = {
+            active: employees.filter(employee => employee.status === 'active').length,
+            inactive: employees.filter(employee => employee.status === 'inactive').length,
+            unavailable: employees.filter(employee => employee.status === 'unavailable').length,
+        }
+        const departementCount = await Employee.count({distinct: true, col: 'Employee.departement'});
+        return res.json({total: employees.length, statusCount, departementCount});
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({message: 'Server/database error', error: err.message});
+    }
+})
+
 // Add new employee
 router.post('/', async (req, res) => {
     const {name, email, departement, phone, address} = req.body;

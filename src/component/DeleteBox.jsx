@@ -1,10 +1,26 @@
-import { Link } from "react-router-dom"
 import styles from "../style/Employees.module.css"
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from "axios";
+import { useUser } from "./UserContext";
 
 export const DeleteBox = ({data, deleteForm}) =>{
     
+    const currentUser = useUser();
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.delete(`${serverURL}/api/employees/${data.employeeId}`, {
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        console.log(response);
+        deleteForm();
+    }
+
     return(
         <div className={styles.deleteBox}>
             <div className={styles.dialogBox}>
@@ -12,8 +28,12 @@ export const DeleteBox = ({data, deleteForm}) =>{
                 <h1>Are you sure want to delete it?</h1>
 
                 <div className={styles.answerOption}>
-                    <Link className={styles.yesAnswer}>Yes</Link>
-                    <Link className={styles.noAnswer} onClick={() => deleteForm()}>No</Link>
+
+                    <form onSubmit={handleSubmit}>
+                        <button className={styles.yesAnswer} type="submit">Yes</button>
+                        <button className={styles.noAnswer} onClick={() => deleteForm()}>No</button>
+                    </form>
+
                 </div>
             </div>
         </div>

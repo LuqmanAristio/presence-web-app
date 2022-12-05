@@ -39,7 +39,10 @@ export const EmployeesInfo = () => {
             validateStatus: () => true
         });
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
-        else setEmployees(response.data);
+        else {
+            setCurrentPage(1);
+            setEmployees(response.data);
+        }
     }
 
     useEffect(() => {
@@ -53,7 +56,6 @@ export const EmployeesInfo = () => {
 
     const handleSearchSubmit = e => {
         e.preventDefault();
-        console.log(status);
         const searchParams = {
             employeeId: idRef.current.value,
             name: nameRef.current.value,
@@ -76,6 +78,10 @@ export const EmployeesInfo = () => {
     const deleteForm = (idEmp) => {
         setData(idEmp);
         setIsDelete(current => !current);
+    };
+
+    const resetSearch = () => {
+        setStatus('active');
     };
 
     let today = new Date();
@@ -151,7 +157,7 @@ export const EmployeesInfo = () => {
                                                 </select>
                                             </td>
                                             <td className={styles.buttonForm}>
-                                                <button className={styles.clearButton} type="reset">Clear</button>
+                                                <button className={styles.clearButton} type="reset" onClick={resetSearch}>Clear</button>
                                                 <button className={styles.submitButton} type="submit">Search</button>
                                             </td>
                                         </tr>

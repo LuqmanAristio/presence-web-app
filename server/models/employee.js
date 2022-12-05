@@ -1,11 +1,11 @@
 import { DataTypes } from 'sequelize';
-import db from '../src/db.js';
 import { v4 as uuid } from 'uuid';
+import db from '../src/db.js';
 
 const Employee = db.define('Employee', {
     employeeId: {
         type: DataTypes.UUID,
-        defaultValue: uuid(),
+        defaultValue: uuid(7),
         primaryKey: true
     },
     name: {
@@ -37,6 +37,10 @@ const Employee = db.define('Employee', {
     admin: {
         type: DataTypes.UUID,
         allowNull: false
+    },
+    status: {
+        type: DataTypes.ENUM('active', 'inactive', 'unavailable'),
+        allowNull: false,
     }
 });
 

@@ -1,5 +1,7 @@
 import express from 'express';
 
+import { Op } from 'sequelize';
+
 import getAdmin from '../middlewares/getAdmin.js';
 import Employee from '../models/employee.js';
 import Attendance from '../models/attendance.js';
@@ -14,8 +16,33 @@ router.get('/', async (req, res) => {
         const attendances = await Attendance.findAll({
             include: [{model: Employee, where: {admin: req.admin.userId}}]
         });
-        const pureAttendances = attendances.map(({id, employeeId, time, status, createdAt, updatedAt}) => (
-            {id, employeeId, time, status, createdAt, updatedAt}
+        const pureAttendances = attendances.map(({id, employeeId, time, status, createdAt, updatedAt, Employee}) => (
+            {id, employeeId, employeeName: Employee.name, time, day: new Date(time).getDay(), status, createdAt, updatedAt}
+        ));
+        return res.json(pureAttendances);
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
+// Get recent attendances (1 week)
+router.get('/weekly', async (req, res) => {
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+    const lastWeek = new Date(today);
+    lastWeek.setDate(lastWeek.getDate() - 6);
+    lastWeek.setHours(0, 0, 0, 0);
+    try {
+        const attendances = await Attendance.findAll({
+            include: [{model: Employee, where: {admin: req.admin.userId}}],
+            where: {
+                time: {
+                    [Op.between]: [lastWeek, today]
+                }
+            }
+        });
+        const pureAttendances = attendances.map(({id, employeeId, time, status, createdAt, updatedAt, Employee}) => (
+            {id, employeeId, employeeName: Employee.name, time, day: new Date(time).getDay(), status, createdAt, updatedAt}
         ));
         return res.json(pureAttendances);
     } catch (err) {

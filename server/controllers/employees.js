@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { nanoid } from 'nanoid';
-import {Op} from 'sequelize';
+import { Op } from 'sequelize';
 
 import getAdmin from '../middlewares/getAdmin.js';
 import Employee from '../models/employee.js';

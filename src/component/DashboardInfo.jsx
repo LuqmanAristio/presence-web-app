@@ -3,9 +3,15 @@ import { ChartDashboard } from "./ChartDashboard"
 import { faUsers, faUserCheck, faUserClock, faUserXmark } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import profil from "../image/profile.png"
+import axios from "axios";
+import { useState, useEffect } from "react"
+import { useUser } from "./UserContext";
 
 
 export const DashboardInfo = () => {
+
+    const currentUser = useUser();
+    const [attendance, setAttendance] = useState([]);
 
     let today = new Date();
     let month = today.toLocaleString('default', { month: 'long' });
@@ -44,6 +50,43 @@ export const DashboardInfo = () => {
     for(let i=lastDayMonth; i<6; i++){
         let realDate = i - lastDayMonth + 1;
         dateNext.push(realDate);
+    }
+
+    async function fetchData() {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/attendances`, {
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        else {
+            setAttendance(response.data);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [currentUser]);
+
+    const timeFormat = (timeReal) =>{
+        const time = new Date(timeReal)
+        const hour = time.getHours();
+        const minutes = time.getMinutes();
+
+        const waktu = hour.toString() + ":" + minutes.toString();
+        
+        return waktu;
+    }
+
+    const statusEmp = (status) =>{
+        return status === "ontime" ? "On Time" : "Late";
+    }
+
+    const reversedFunction = (attendance) =>{
+        const reversed = [...attendance].reverse();
+        return reversed; 
     }
 
     return (
@@ -141,43 +184,22 @@ export const DashboardInfo = () => {
                 </div>
                 <div className={styles.recentInfo}>
                     <h1>Recent Attendance</h1>
+                    
+                    {reversedFunction(attendance).slice(0, 3).map(attendanceEmp => (
+                    <div className={styles.recentList}>
+                        <div className={styles.imageList}>
+                            <img src={profil} alt="" />
+                        </div>
+                        <div className={styles.nameList}>
+                            <h3>{attendanceEmp.employeeName}</h3>
+                            <h4>{timeFormat(attendanceEmp.time)}</h4>
+                        </div>
+                        <div className={styles.timeList}>
+                            <h3>{statusEmp(attendanceEmp.status)}</h3>
+                        </div>
+                    </div>
+                    ))}
 
-                    <div className={styles.recentList}>
-                        <div className={styles.imageList}>
-                            <img src={profil} alt="" />
-                        </div>
-                        <div className={styles.nameList}>
-                            <h3>Luqman Aristio</h3>
-                            <h4>14 Minutes Ago</h4>
-                        </div>
-                        <div className={styles.timeList}>
-                            <h3>08.00 AM</h3>
-                        </div>
-                    </div>
-                    <div className={styles.recentList}>
-                        <div className={styles.imageList}>
-                            <img src={profil} alt="" />
-                        </div>
-                        <div className={styles.nameList}>
-                            <h3>Luqman Aristio</h3>
-                            <h4>14 Minutes Ago</h4>
-                        </div>
-                        <div className={styles.timeList}>
-                            <h3>08.00 AM</h3>
-                        </div>
-                    </div>
-                    <div className={styles.recentList}>
-                        <div className={styles.imageList}>
-                            <img src={profil} alt="" />
-                        </div>
-                        <div className={styles.nameList}>
-                            <h3>Luqman Aristio</h3>
-                            <h4>14 Minutes Ago</h4>
-                        </div>
-                        <div className={styles.timeList}>
-                            <h3>08.00 AM</h3>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

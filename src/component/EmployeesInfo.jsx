@@ -41,7 +41,6 @@ export const EmployeesInfo = () => {
         });
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
         else {
-            setCurrentPage(1);
             setEmployees(response.data);
         }
     }
@@ -78,6 +77,7 @@ export const EmployeesInfo = () => {
             departement: departementRef.current.value,
             status
         }
+        setCurrentPage(1);
         fetchData(searchParams);
     }
 

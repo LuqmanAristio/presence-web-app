@@ -1,6 +1,9 @@
 import styles from "../style/Attendance.module.css"
 import {useRef, useEffect, useState} from "react"
 import { saveAs } from 'file-saver'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { TimeEdit } from "./TimeEdit";
 
 export const AttendanceChecker = () =>{
 
@@ -8,6 +11,8 @@ export const AttendanceChecker = () =>{
     const photoRef = useRef(null);
  
     const [hasPhoto, setHasPhoto] = useState(false);
+    const [statusEmp, setStatusEmp] = useState("none");
+    const [employeChecked, setNameEmp] = useState(false);
 
     const getVideo = () =>{
         navigator.mediaDevices
@@ -42,10 +47,11 @@ export const AttendanceChecker = () =>{
     const downloadImage = () => {
 
         takePhoto();
+        checkStatus();
 
         var canvas = document.getElementById("my-canvas");
         canvas.toBlob(function(blob) {
-        saveAs(blob, "pretty image.png");
+        saveAs(blob, "imageResult.png");
 });
     }
 
@@ -53,15 +59,99 @@ export const AttendanceChecker = () =>{
         getVideo();
     }, [videoRef])
 
+    const [isUpdate, setUpdate] = useState();
+
+    const handleClick = () => {
+        setUpdate(current => !current);
+    };
+
+    const timeLocalSaved = () => {
+        const timeSaved = JSON.parse(localStorage.getItem("timeSaved"));
+        const hour = timeSaved[0];
+        const minute = timeSaved[1];
+
+        const time = hour +" : "+ minute;
+
+        return time;
+    }
+
+    const checkStatus = () =>{
+        const timeSaved = JSON.parse(localStorage.getItem("timeSaved"));
+        const hour = timeSaved[0];
+        const minute = timeSaved[1];
+
+        const today = new Date();
+        const hourNow = today.getHours();
+        const minuteNow = today.getMinutes();
+
+        if(hourNow>hour){
+            setStatusEmp("late");
+        }
+        else if(hour===hourNow && minuteNow>minute){
+            setStatusEmp("late");
+        }
+        else if(hour===hourNow && minute<=minuteNow){
+            setStatusEmp("ontime");
+        }
+        else{
+            setStatusEmp("ontime");
+        }
+
+        setTimeout(resetStatus, 5000); 
+    }
+
+    const checkEmployee = () =>{
+        if(statusEmp === "none"){
+            return "Waiting Subject..."
+        }
+        else if(statusEmp === "ontime"){
+            return "Checked : On Time"
+        }
+        else{
+            return "Checked : Late"
+        }
+    }
+
+    const employeeName = () =>{
+        setNameEmp(current => !current)
+    }
+
+    const resetStatus = () =>{
+        setStatusEmp("none");
+    }
+    
+
     return(
         <div className={styles.attendanceChecker}>
             <div className={styles.attendanceContent}>
                 <div className={styles.checkerPart}>
-                    <h1>SHOW YOUR FACE AT THE CAMERA</h1>
+                    
+                    <div className={styles.timeCheck}>
+                        <div className={styles.timeTitle}>
+                            <h3>Attendance Time</h3>
+                        </div>
+                        <div className={styles.timeChanger}>
+                            <h3>{timeLocalSaved()}</h3>
+                            <button onClick={handleClick}>
+                                <FontAwesomeIcon icon={faPencil} />
+                            </button>
+                        </div>
+                    </div>
 
-                    <h2>Muhammad Luqman Aristio</h2>
 
-                    <h3 className={styles.ontimeCheck}>CHECKED : ON TIME</h3>
+                    <h1>SHOW YOUR FACE AT THE CAMERA</h1>                    
+
+                    {employeChecked && (
+                        <div>
+                            <h2>Luqman Aristio</h2>
+                        </div>
+                    )}
+
+                    {!employeChecked && (
+                        <div className={styles.loader}></div>
+                    )}
+
+                    <h3 className={statusEmp === "none" ? styles.emptyCheck : statusEmp === "ontime" ? styles.ontimeCheck : styles.lateCheck}>{checkEmployee()}</h3>
                 </div>
                 <div className={styles.cameraPart}>
                     <div className={styles.cameraVideo}>
@@ -70,11 +160,22 @@ export const AttendanceChecker = () =>{
                         </video>
                     </div>
                     <div className={'result' + (hasPhoto ? 'hasPhoto' : '')} id={styles.buttonPhoto}>
-                         <canvas ref={photoRef} hidden id="my-canvas"></canvas>
-                         <button onClick={downloadImage} className={styles.saveButton}>Check Status</button>
+                         <button onClick={downloadImage} className={styles.saveButton}>Take Picture</button>
+                         <button onClick={getVideo} className={styles.refreshButton}>Refresh Camera</button>
                     </div>
+                    <canvas ref={photoRef} hidden id="my-canvas"></canvas>
                 </div>
             </div>
+
+            
+
+            {isUpdate && (
+                <div>
+                    <TimeEdit handleSave={handleClick}/>
+                    <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={handleClick}/>
+                </div>
+            )}
+
         </div>
     )
 }

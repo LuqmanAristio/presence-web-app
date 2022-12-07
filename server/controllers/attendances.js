@@ -43,10 +43,18 @@ router.get('/weekly', async (req, res) => {
             },
             order: [['time', 'DESC']]
         });
-        const pureAttendances = attendances.map(({id, employeeId, time, status, createdAt, updatedAt, Employee}) => (
-            {id, employeeId, employeeName: Employee.name, time, day: new Date(time).getDay(), status, createdAt, updatedAt}
-        ));
-        return res.json(pureAttendances);
+        const weekTotals = [7, 6, 5, 4, 3, 2, 1].map(day => {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Satrurday', 'Sunday'];
+            const dayTotal = attendances.filter(({time}) => new Date(time).getDay() === day);
+            return {
+                id: day,
+                day: days[day - 1],
+                userAtt: dayTotal.length
+            }
+        });
+        const todayDay = today.getDay();
+        const recentTotals = [...weekTotals.slice(7 - todayDay), ...weekTotals.slice(0, 7 - todayDay)];
+        return res.json(recentTotals);
     } catch (err) {
         console.log(err.message);
     }

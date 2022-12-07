@@ -58,7 +58,7 @@ router.get('/info', async (req, res) => {
         console.log(err.message);
         return res.status(500).json({message: 'Server/database error', error: err.message});
     }
-})
+});
 
 // Add new employee
 router.post('/', async (req, res) => {

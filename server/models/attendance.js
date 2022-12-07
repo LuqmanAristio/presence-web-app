@@ -13,7 +13,7 @@ const Attendance = db.define('Attendance', {
         defaultValue: DataTypes.NOW
     },
     status: {
-        type: DataTypes.ENUM('ontime', 'late', 'absent'),
+        type: DataTypes.ENUM('ontime', 'late'),
         allowNull: false
     }
 });

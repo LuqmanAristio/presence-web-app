@@ -1,11 +1,13 @@
 import styles from "../style/Attendance.module.css"
 import {useRef, useEffect, useState} from "react"
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { saveAs } from 'file-saver'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TimeEdit } from "./TimeEdit";
 
 export const AttendanceChecker = () =>{
+    const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
 
     const videoRef = useRef(null);
     const photoRef = useRef(null);
@@ -66,7 +68,6 @@ export const AttendanceChecker = () =>{
     };
 
     const timeLocalSaved = () => {
-        const timeSaved = JSON.parse(localStorage.getItem("timeSaved"));
         const hour = timeSaved[0];
         const minute = timeSaved[1];
 
@@ -76,7 +77,6 @@ export const AttendanceChecker = () =>{
     }
 
     const checkStatus = () =>{
-        const timeSaved = JSON.parse(localStorage.getItem("timeSaved"));
         const hour = timeSaved[0];
         const minute = timeSaved[1];
 
@@ -88,11 +88,11 @@ export const AttendanceChecker = () =>{
             setStatusEmp("late");
             setTimeout(resetStatus, 3000); 
         }
-        else if(hour==hourNow && minuteNow>minute){
+        else if(hour === hourNow && minuteNow > minute){
             setStatusEmp("late");
             setTimeout(resetStatus, 3000); 
         }
-        else if(hour==hourNow && minute<=minuteNow){
+        else if(hour === hourNow && minute <= minuteNow){
             setStatusEmp("ontime");
             setTimeout(resetStatus, 3000); 
         }
@@ -173,7 +173,7 @@ export const AttendanceChecker = () =>{
 
             {isUpdate && (
                 <div>
-                    <TimeEdit handleSave={handleClick}/>
+                    <TimeEdit handleSave={handleClick} setTimeSaved={setTimeSaved}/>
                     <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={handleClick}/>
                 </div>
             )}

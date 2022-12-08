@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { useSessionStorage } from './useSessionStorage';
+import { useSessionStorage } from '../hooks/useSessionStorage';
 
 const UserContext = createContext();
 const UserUpdateContext = createContext();

@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import styles from "../style/Attendance.module.css"
 
-export const TimeEdit = ({handleSave}) =>{
+export const TimeEdit = ({handleSave, setTimeSaved}) =>{
     
     const hourCheck = useRef(null);
     const minuteCheck = useRef(null);
@@ -20,7 +20,7 @@ export const TimeEdit = ({handleSave}) =>{
 
         let timeInfo = [numberHours, numberMinute];
 
-        localStorage.setItem("timeSaved", JSON.stringify(timeInfo));
+        setTimeSaved(JSON.stringify(timeInfo));
         handleSave();
     }
 

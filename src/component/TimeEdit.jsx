@@ -20,7 +20,7 @@ export const TimeEdit = ({handleSave, setTimeSaved}) =>{
 
         let timeInfo = [numberHours, numberMinute];
 
-        setTimeSaved(JSON.stringify(timeInfo));
+        setTimeSaved(timeInfo);
         handleSave();
     }
 

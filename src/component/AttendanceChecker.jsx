@@ -77,26 +77,26 @@ export const AttendanceChecker = () =>{
     }
 
     const checkStatus = () =>{
-        const hour = timeSaved[0];
-        const minute = timeSaved[1];
+        const hour = parseInt(timeSaved[0]);
+        const minute = parseInt(timeSaved[1]);
 
         const today = new Date();
         const hourNow = today.getHours();
         const minuteNow = today.getMinutes();
 
-        if(hourNow>hour){
+        if(hourNow > hour) {
             setStatusEmp("late");
             setTimeout(resetStatus, 3000); 
         }
-        else if(hour === hourNow && minuteNow > minute){
+        else if(hour === hourNow && minuteNow > minute) {
             setStatusEmp("late");
             setTimeout(resetStatus, 3000); 
         }
-        else if(hour === hourNow && minute <= minuteNow){
+        else if(hour === hourNow && minute <= minuteNow) {
             setStatusEmp("ontime");
             setTimeout(resetStatus, 3000); 
         }
-        else{
+        else {
             setStatusEmp("ontime");
             setTimeout(resetStatus, 3000); 
         }

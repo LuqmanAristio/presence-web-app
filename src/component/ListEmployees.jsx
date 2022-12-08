@@ -9,18 +9,6 @@ export const List = ({ data, updateForm, deleteForm}) => {
     }
 
     return (
-        <div>
-            <table className={styles.tableList}>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Status</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Phone</th>
-                    <th></th>
-                </tr>
-            </thead>
             <tbody>
                 {data.map(employee => (
                     <tr key={employee.employeeId}>
@@ -36,10 +24,5 @@ export const List = ({ data, updateForm, deleteForm}) => {
                     </tr>
                 ))}
             </tbody>
-            </table>
-        </div>
-       
-
-        
     );
   };

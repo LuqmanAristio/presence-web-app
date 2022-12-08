@@ -12,6 +12,9 @@ export const DashboardInfo = () => {
 
     const currentUser = useUser();
     const [attendance, setAttendance] = useState([]);
+    const [infoAttendance, setInfo] = useState([]);
+    const [loadingStatus, setLoading] = useState(true);
+    const [loadingRecent, setRecent] = useState(true);
 
     let today = new Date();
     let month = today.toLocaleString('default', { month: 'long' });
@@ -63,12 +66,24 @@ export const DashboardInfo = () => {
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
         else {
             setAttendance(response.data);
+            setRecent(false);
         }
     }
-
-    useEffect(() => {
-        fetchData();
-    }, [currentUser]);
+    
+    async function fetchInfo() {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/attendances/info`, {
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        else {
+            setInfo(response.data);
+            setLoading(false);
+        }
+    }
 
     const timeFormat = (timeReal) =>{
         const time = new Date(timeReal)
@@ -84,10 +99,17 @@ export const DashboardInfo = () => {
         return status === "ontime" ? "On Time" : "Late";
     }
 
-    const reversedFunction = (attendance) =>{
-        const reversed = [...attendance].reverse();
-        return reversed; 
+    const loadingBar = () =>{
+        return <div class={styles.loading}><span></span><span></span><span></span><span></span><span></span></div>
     }
+
+    useEffect(() => {
+        fetchData();
+    }, [currentUser]);
+
+    useEffect(() => {
+        fetchInfo();
+    }, [currentUser]);
 
     return (
         <div className={styles.mainDashboard}>
@@ -104,7 +126,7 @@ export const DashboardInfo = () => {
                             </div>
                             <div className={styles.textInfo}>
                                 <h3>Present</h3>
-                                <h1>1250</h1>
+                                <h1>{loadingStatus===false? infoAttendance.total : loadingBar()}</h1>
                                 <p>Today's employee attendance </p>
                             </div>
                         </div>
@@ -115,7 +137,7 @@ export const DashboardInfo = () => {
                             </div>
                             <div className={styles.textInfo}>
                                 <h3>On Time</h3>
-                                <h1>1000</h1>
+                                <h1>{loadingStatus===false? infoAttendance.ontime : loadingBar()}</h1>
                                 <p>On time employees attendance</p>
                             </div>
                         </div>
@@ -126,7 +148,7 @@ export const DashboardInfo = () => {
                             </div>
                             <div className={styles.textInfo}>
                                 <h3>Late</h3>
-                                <h1>250</h1>
+                                <h1>{loadingStatus===false? infoAttendance.late : loadingBar()}</h1>
                                 <p>Late attendance employees</p>
                             </div>
                         </div>
@@ -137,7 +159,7 @@ export const DashboardInfo = () => {
                             </div>
                             <div className={styles.textInfo}>
                                 <h3>Absent</h3>
-                                <h1>50</h1>
+                                <h1>{loadingStatus===false? infoAttendance.absent : loadingBar()}</h1>
                                 <p>Absent employees today</p>
                             </div>
                         </div>
@@ -185,20 +207,40 @@ export const DashboardInfo = () => {
                 <div className={styles.recentInfo}>
                     <h1>Recent Attendance</h1>
                     
-                    {reversedFunction(attendance).slice(0, 3).map(attendanceEmp => (
-                    <div className={styles.recentList}>
-                        <div className={styles.imageList}>
-                            <img src={profil} alt="" />
+
+                    {loadingRecent &&
+                        <div className={styles.loadingBox}>
+                            <div className={styles.spinner}>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
                         </div>
-                        <div className={styles.nameList}>
-                            <h3>{attendanceEmp.employeeName}</h3>
-                            <h4>{timeFormat(attendanceEmp.time)}</h4>
+                    }
+
+                    {!loadingRecent &&
+                        <div>
+                            {attendance.slice(0, 3).map(attendanceEmp => (
+                            <div className={styles.recentList}>
+                                <div className={styles.imageList}>
+                                    <img src={profil} alt="" />
+                                </div>
+                                <div className={styles.nameList}>
+                                    <h3>{attendanceEmp.employeeName}</h3>
+                                    <h4>{timeFormat(attendanceEmp.time)}</h4>
+                                </div>
+                                <div className={styles.timeList}>
+                                    <h3>{statusEmp(attendanceEmp.status)}</h3>
+                                </div>
+                            </div>
+                            ))}
                         </div>
-                        <div className={styles.timeList}>
-                            <h3>{statusEmp(attendanceEmp.status)}</h3>
-                        </div>
-                    </div>
-                    ))}
+                    }
+
+                    
 
                 </div>
             </div>

@@ -43,10 +43,18 @@ router.get('/weekly', async (req, res) => {
             },
             order: [['time', 'DESC']]
         });
-        const pureAttendances = attendances.map(({id, employeeId, time, status, createdAt, updatedAt, Employee}) => (
-            {id, employeeId, employeeName: Employee.name, time, day: new Date(time).getDay(), status, createdAt, updatedAt}
-        ));
-        return res.json(pureAttendances);
+        const weekTotals = [7, 6, 5, 4, 3, 2, 1].map(day => {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Satrurday', 'Sunday'];
+            const dayTotal = attendances.filter(({time}) => new Date(time).getDay() === day);
+            return {
+                id: day,
+                day: days[day - 1],
+                userAtt: dayTotal.length
+            }
+        });
+        const todayDay = today.getDay();
+        const recentTotals = [...weekTotals.slice(7 - todayDay), ...weekTotals.slice(0, 7 - todayDay)];
+        return res.json(recentTotals);
     } catch (err) {
         console.log(err.message);
     }
@@ -97,7 +105,7 @@ router.get('/info', async (req, res) => {
                 }
             }
         });
-        const statusCount = {
+        const {ontime, late, absent} = {
             ontime: attendances.filter(attendance => attendance.status === 'ontime').length,
             late: attendances.filter(attendance => attendance.status === 'late').length,
             absent: activeEmployeesCount - attendances.length
@@ -112,7 +120,7 @@ router.get('/info', async (req, res) => {
         });
         const thisMonthActiveEmployeeCount = await Employee.count({where: {admin: req.admin.userId, status: 'active'}});
         const percentage = (thisMonthAttendanceCount / (thisMonthActiveEmployeeCount * now.getDate())) * 100;
-        return res.json({total: attendances.length, statusCount, percentage});
+        return res.json({total: attendances.length, ontime, late, absent, percentage});
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({message: 'Server/database error', error: err.message});

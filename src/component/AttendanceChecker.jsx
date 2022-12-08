@@ -86,18 +86,20 @@ export const AttendanceChecker = () =>{
 
         if(hourNow>hour){
             setStatusEmp("late");
+            setTimeout(resetStatus, 3000); 
         }
-        else if(hour===hourNow && minuteNow>minute){
+        else if(hour==hourNow && minuteNow>minute){
             setStatusEmp("late");
+            setTimeout(resetStatus, 3000); 
         }
-        else if(hour===hourNow && minute<=minuteNow){
+        else if(hour==hourNow && minute<=minuteNow){
             setStatusEmp("ontime");
+            setTimeout(resetStatus, 3000); 
         }
         else{
             setStatusEmp("ontime");
+            setTimeout(resetStatus, 3000); 
         }
-
-        setTimeout(resetStatus, 5000); 
     }
 
     const checkEmployee = () =>{

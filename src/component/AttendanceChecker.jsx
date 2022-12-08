@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TimeEdit } from "./TimeEdit";
+import { ModelPrediction } from "./ModelPrediction";
 
 export const AttendanceChecker = () =>{
     const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
@@ -15,6 +16,7 @@ export const AttendanceChecker = () =>{
     const [hasPhoto, setHasPhoto] = useState(false);
     const [statusEmp, setStatusEmp] = useState("none");
     const [employeChecked, setNameEmp] = useState(false);
+    const [predictModel, setPredict] = useState(false);
 
     const getVideo = () =>{
         navigator.mediaDevices
@@ -47,15 +49,24 @@ export const AttendanceChecker = () =>{
     }
 
     const downloadImage = () => {
-
         takePhoto();
         checkStatus();
 
         var canvas = document.getElementById("my-canvas");
+        var gambarni = document.getElementById("gambarCok");
+        
         canvas.toBlob(function(blob) {
-        saveAs(blob, "imageResult.png");
-});
+            // saveAs(blob, "imageResult.png");
+            gambarni.src = URL.createObjectURL(blob);
+            setPredict(true);
+        });
     }
+
+    const getImage = () =>{
+        const imgToPredict = document.getElementById("gambarCok").src;
+        return imgToPredict;
+    }
+
 
     useEffect(() => {
         getVideo();
@@ -114,10 +125,6 @@ export const AttendanceChecker = () =>{
         }
     }
 
-    const employeeName = () =>{
-        setNameEmp(current => !current)
-    }
-
     const resetStatus = () =>{
         setStatusEmp("none");
     }
@@ -166,6 +173,8 @@ export const AttendanceChecker = () =>{
                          <button onClick={getVideo} className={styles.refreshButton}>Refresh Camera</button>
                     </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>
+
+                    <img src={null} hidden id="gambarCok" />
                 </div>
             </div>
 
@@ -175,6 +184,12 @@ export const AttendanceChecker = () =>{
                 <div>
                     <TimeEdit handleSave={handleClick} setTimeSaved={setTimeSaved}/>
                     <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={handleClick}/>
+                </div>
+            )}
+
+            {predictModel && (
+                <div>
+                    <ModelPrediction gambarWajah={getImage()} />
                 </div>
             )}
 

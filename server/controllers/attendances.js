@@ -105,7 +105,7 @@ router.get('/info', async (req, res) => {
                 }
             }
         });
-        const statusCount = {
+        const {ontime, late, absent} = {
             ontime: attendances.filter(attendance => attendance.status === 'ontime').length,
             late: attendances.filter(attendance => attendance.status === 'late').length,
             absent: activeEmployeesCount - attendances.length
@@ -120,7 +120,7 @@ router.get('/info', async (req, res) => {
         });
         const thisMonthActiveEmployeeCount = await Employee.count({where: {admin: req.admin.userId, status: 'active'}});
         const percentage = (thisMonthAttendanceCount / (thisMonthActiveEmployeeCount * now.getDate())) * 100;
-        return res.json({total: attendances.length, statusCount, percentage});
+        return res.json({total: attendances.length, ontime, late, absent, percentage});
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({message: 'Server/database error', error: err.message});

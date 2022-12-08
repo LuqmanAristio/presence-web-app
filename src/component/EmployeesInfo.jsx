@@ -59,7 +59,6 @@ export const EmployeesInfo = () => {
         });
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
         setEmployeesSummary(response.data);
-        console.log(employeesSummary);
         setInfo(true);
     }
 

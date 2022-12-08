@@ -100,7 +100,7 @@ export const DashboardInfo = () => {
     }
 
     const loadingBar = () =>{
-        return <div class={styles.loading}><span></span><span></span><span></span><span></span><span></span></div>
+        return <div className={styles.loading}><span></span><span></span><span></span><span></span><span></span></div>
     }
 
     useEffect(() => {
@@ -126,7 +126,7 @@ export const DashboardInfo = () => {
                             </div>
                             <div className={styles.textInfo}>
                                 <h3>Present</h3>
-                                <h1>{loadingStatus===false? infoAttendance.total : loadingBar()}</h1>
+                                <h1>{loadingStatus===false? infoAttendance.todayCount : loadingBar()}</h1>
                                 <p>Today's employee attendance </p>
                             </div>
                         </div>
@@ -224,7 +224,7 @@ export const DashboardInfo = () => {
                     {!loadingRecent &&
                         <div>
                             {attendance.slice(0, 3).map(attendanceEmp => (
-                            <div className={styles.recentList}>
+                            <div key={attendanceEmp.id} className={styles.recentList}>
                                 <div className={styles.imageList}>
                                     <img src={profil} alt="" />
                                 </div>

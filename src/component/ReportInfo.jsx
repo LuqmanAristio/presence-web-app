@@ -12,6 +12,8 @@ export const ReportInfo = () =>{
     const [attendance, setAttendance] = useState([]);
     const [loadingStatus, setLoading] = useState(true);
     const [loadingPercent, setPercent] = useState(true);
+    const [widthValueOntime, setWidthValueOntime] = useState(0);
+    const [widthValueLate, setWidthValueLate] = useState(0);
     
     let today = new Date();
     let month = today.toLocaleString('default', { month: 'long' });
@@ -44,8 +46,28 @@ export const ReportInfo = () =>{
         }
     }
 
+    async function fetchInfo() {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/attendances/info`, {
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        else {
+            setWidthValueOntime(response.data.ontimePercentage.toPrecision(2));
+            setWidthValueLate(response.data.latePercentage.toPrecision(2));
+            setPercent(false);
+        }
+    }
+
     useEffect(() => {
         fetchData();
+    }, [currentUser]);
+
+    useEffect(() => {
+        fetchInfo();
     }, [currentUser]);
 
     function filterByStatus(obj) {
@@ -57,9 +79,6 @@ export const ReportInfo = () =>{
       }
         
     let arrayByStatus = attendance.filter(filterByStatus);
-
-    let widthValueOntime = 80;
-    let widthValueLate = 15;
 
     const timeFormat = (timeReal) =>{
         const time = new Date(timeReal)
@@ -97,7 +116,7 @@ export const ReportInfo = () =>{
                             {!loadingStatus &&
                                 <div className={styles.lateList}>
                                     {arrayByStatus.slice(0,5).map(employee => (
-                                        <div className={styles.lateEmployee}>
+                                        <div key={employee.employeeId} className={styles.lateEmployee}>
                                             <div className={styles.imageIcon}>
                                                 <img src={icon} alt="" />
                                             </div>
@@ -117,7 +136,7 @@ export const ReportInfo = () =>{
 
                                 <div className={styles.boxPercent}>
                                     <div className={styles.numberPercent}>
-                                        <h4>{loadingPercent===false? widthValueOntime+"%" : <div className={styles.loader}></div>}</h4>
+                                        <h4>{loadingPercent ? <div className={styles.loader}></div> : widthValueOntime + "%"}</h4>
                                     </div>
                                     <div className={styles.barPercent}>
                                         <div className={styles.insideBar} style={{width: widthValueOntime+"%"}}>
@@ -131,10 +150,10 @@ export const ReportInfo = () =>{
 
                                 <div className={styles.boxPercent}>
                                     <div className={styles.numberPercent}>
-                                        <h4>{loadingPercent===false? widthValueLate+"%" : <div className={styles.loader}></div>}</h4>
+                                        <h4>{loadingPercent ? <div className={styles.loader}></div> : widthValueLate + "%"}</h4>
                                     </div>
                                     <div className={styles.barPercent}>
-                                        <div className={styles.insideBar} style={{width: widthValueLate+"%"}}>
+                                        <div className={styles.insideBar} style={{width: widthValueLate + "%"}}>
 
                                         </div>
                                     </div>

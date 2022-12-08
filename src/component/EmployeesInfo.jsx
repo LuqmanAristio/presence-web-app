@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { Link } from "react-router-dom"
 import styles from "../style/Employees.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

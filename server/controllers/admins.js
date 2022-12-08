@@ -56,8 +56,9 @@ router.post('/login', async (req, res) => {
 
     const isValidated = await bcrypt.compare(password, admin.password);
     if(!isValidated) return res.status(401).json({ok: false, message: 'Username or Password is incorrect!'});
-    
-    const token = jwt.sign(admin.toJSON(), process.env.JWT_SECRET, {expiresIn: '1h'});
+
+    const adminPayload = await Admin.findOne({where: {username}, attributes: {exclude: ['username', 'password']}});
+    const token = jwt.sign(adminPayload.toJSON(), process.env.JWT_SECRET, {expiresIn: '1h'});
     res.json({ok: true, message: 'Logged In', token, user: admin});
 });
 

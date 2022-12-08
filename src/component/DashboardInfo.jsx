@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import styles from "../style/DashboardInfo.module.css"
 import { ChartDashboard } from "./ChartDashboard"
 import { faUsers, faUserCheck, faUserClock, faUserXmark } from "@fortawesome/free-solid-svg-icons"

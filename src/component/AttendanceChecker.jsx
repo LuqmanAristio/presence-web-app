@@ -52,25 +52,24 @@ export const AttendanceChecker = () =>{
         takePhoto();
         checkStatus();
 
-        var canvas = document.getElementById("my-canvas");
-        var gambarni = document.getElementById("gambarCok");
+        const canvas = document.getElementById("my-canvas");
+        const predictIMG = document.getElementById("predictImg");
         
-        canvas.toBlob(function(blob) {
+        canvas.toBlob(blob => {
             // saveAs(blob, "imageResult.png");
-            gambarni.src = URL.createObjectURL(blob);
+            predictIMG.src = URL.createObjectURL(blob);
             setPredict(true);
         });
     }
 
     const getImage = () =>{
-        const imgToPredict = document.getElementById("gambarCok").src;
+        const imgToPredict = document.getElementById("predictImg").src;
         return imgToPredict;
     }
 
-
     useEffect(() => {
         getVideo();
-    }, [videoRef])
+    }, [videoRef]);
 
     const [isUpdate, setUpdate] = useState();
 
@@ -174,7 +173,7 @@ export const AttendanceChecker = () =>{
                     </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>
 
-                    <img src={null} hidden id="gambarCok" />
+                    <img src={null} alt="for prediction" hidden id="predictImg" />
                 </div>
             </div>
 

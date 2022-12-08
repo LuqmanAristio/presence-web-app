@@ -96,8 +96,7 @@ router.get('/info', async (req, res) => {
     monthBegin.setDate(1);
     monthBegin.setHours(0, 0, 0, 0);
     try {
-        const activeEmployeesCount = await Employee.count({where: {admin: req.admin.userId, status: 'active'}});
-        const attendances = await Attendance.findAll({
+        const thisDayAttendances = await Attendance.findAll({
             include: [{model: Employee, where: {admin: req.admin.userId}}],
             where: {
                 time: {
@@ -105,12 +104,7 @@ router.get('/info', async (req, res) => {
                 }
             }
         });
-        const {ontime, late, absent} = {
-            ontime: attendances.filter(attendance => attendance.status === 'ontime').length,
-            late: attendances.filter(attendance => attendance.status === 'late').length,
-            absent: activeEmployeesCount - attendances.length
-        };
-        const thisMonthAttendanceCount = await Attendance.count({
+        const thisMonthAttendances = await Attendance.findAll({
             include: [{model: Employee, where: {admin: req.admin.userId, status: 'active'}}],
             where: {
                 time: {
@@ -118,9 +112,122 @@ router.get('/info', async (req, res) => {
                 }
             }
         });
-        const thisMonthActiveEmployeeCount = await Employee.count({where: {admin: req.admin.userId, status: 'active'}});
-        const percentage = (thisMonthAttendanceCount / (thisMonthActiveEmployeeCount * now.getDate())) * 100;
-        return res.json({total: attendances.length, ontime, late, absent, percentage});
+        const {ontime, late, absent} = {
+            ontime: thisDayAttendances.filter(attendance => attendance.status === 'ontime').length,
+            late: thisDayAttendances.filter(attendance => attendance.status === 'late').length,
+            absent: thisDayAttendances - thisDayAttendances.length
+        };
+
+        const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId, status: 'active'}});
+        const thisMonthTotalAttendances = activeEmployees.map(employee => {
+            const registerDate = new Date(employee.createdAt);
+            // Same year
+            if(registerDate.getFullYear() === now.getFullYear()) {
+                if(registerDate.getMonth() < now.getMonth()) {
+                    return now.getDate();
+                } else if(registerDate.getMonth() === now.getMonth()) {
+                    return now.getDate() - registerDate.getDate() + 1;
+                } else {
+                    return 0;
+                }
+            }
+            // More than 1 year ago
+            return now.getDate();
+        }).reduce((total, count) => total + count, 0);
+        
+        const thisMonthOntimeCount = thisMonthAttendances.filter(attendance => attendance.status === 'ontime').length;
+        const thisMonthLateCount = thisMonthAttendances.filter(attendance => attendance.status === 'late').length;
+        const ontimePercentage = (thisMonthOntimeCount / thisMonthTotalAttendances) * 100;
+        const latePercentage = (thisMonthLateCount / thisMonthTotalAttendances) * 100;
+
+        return res.json({
+            todayCount: thisDayAttendances.length,
+            monthCount: thisMonthAttendances.length,
+            ontime, late, absent,
+            ontimePercentage, latePercentage
+        });
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({message: 'Server/database error', error: err.message});
+    }
+});
+
+// Get attendance reports
+router.get('/report', getAdmin, async (req, res) => {
+    const todayBegin = new Date();
+    todayBegin.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    const now = new Date();
+    const lastWeek = new Date(now);
+    lastWeek.setDate(lastWeek.getDate() - 6);
+    lastWeek.setHours(0, 0, 0, 0);
+    const monthBegin = new Date(now);
+    monthBegin.setDate(1);
+    monthBegin.setHours(0, 0, 0, 0);
+
+    const range = req.query.range || 'daily';
+    try {
+        switch(range) {
+            case 'daily': {
+                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId}});
+                const thisDayAttendances = await Attendance.findAll({
+                    include: [{model: Employee, where: {admin: req.admin.userId}}],
+                    where: {
+                        time: {
+                            [Op.between]: [todayBegin, todayEnd]
+                        }
+                    }
+                });
+                const employeeReport = activeEmployees.map(({employeeId, name, departement}) => {
+                    const thisDayEmployeeAttendance = thisDayAttendances.find(attendance => attendance.employeeId === employeeId);
+                    const status = thisDayEmployeeAttendance ? thisDayEmployeeAttendance.status : 'absent';
+                    return {employeeId, name, departement, status}
+                });
+                return res.json(employeeReport);
+            }
+            case 'weekly': {
+                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId}});
+                const thisWeekAttendances = await Attendance.findAll({
+                    include: [{model: Employee, where: {admin: req.admin.userId}}],
+                    where: {
+                        time: {
+                            [Op.between]: [lastWeek, now]
+                        }
+                    }
+                });
+                const employeeReport = activeEmployees.map(({employeeId, name, departement}) => {
+                    const thisWeekEmployeeAttendance = thisWeekAttendances.filter(attendance => attendance.employeeId === employeeId);
+                    const ontime = thisWeekEmployeeAttendance.filter(attendance => attendance.status === 'ontime').length;
+                    const late = thisWeekEmployeeAttendance.filter(attendance => attendance.status === 'late').length;
+                    const absent = 5 - ontime - late;
+                    return {employeeId, name, ontime, late, absent, departement}
+                });
+                return res.json(employeeReport);
+            }
+            case 'monthly': {
+                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId}});
+                const thisMonthAttendances = await Attendance.findAll({
+                    include: [{model: Employee, where: {admin: req.admin.userId}}],
+                    where: {
+                        time: {
+                            [Op.between]: [monthBegin, now]
+                        }
+                    }
+                });
+                const employeeReport = activeEmployees.map(({employeeId, name, departement}) => {
+                    const thisMonthEmployeeAttendance = thisMonthAttendances.filter(attendance => attendance.employeeId === employeeId);
+                    const ontime = thisMonthEmployeeAttendance.filter(attendance => attendance.status === 'ontime').length;
+                    const late = thisMonthEmployeeAttendance.filter(attendance => attendance.status === 'late').length;
+                    const absent = now.getDate() - ontime - late;
+                    return {employeeId, name, ontime, late, absent, departement}
+                });
+                return res.json(employeeReport);
+            }
+            default: {
+                return res.json(400).json({message: "Parameter 'range' must me between 'daily', 'weekly', or 'monthly'"});
+            }
+        }
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({message: 'Server/database error', error: err.message});

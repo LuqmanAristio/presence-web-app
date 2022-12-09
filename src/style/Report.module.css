@@ -185,6 +185,12 @@
     padding: 1%;
 }
 
+.loadingBox h1{
+    font-size: 3vw;
+    color: #878787;
+    opacity: 0.3;
+}
+
 .botBox h3{
     text-align: center;
     color: #3F3E4B;
@@ -204,6 +210,7 @@
     border: none;
     background-color: #3C37FF;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .downloadIcon{

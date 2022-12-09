@@ -1,31 +1,35 @@
 import styles from "../style/Attendance.module.css"
 import {useRef, useEffect, useState} from "react"
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { saveAs } from 'file-saver'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TimeEdit } from "./TimeEdit";
 import * as tf from "@tensorflow/tfjs"
-import { useSessionStorage } from "../hooks/useSessionStorage";
 import { useUser } from "./UserContext";
+import { useModel, useModelUpdate } from "./ModelContext";
 
 export const AttendanceChecker = () =>{
-    const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
-
     const currentUser = useUser();
-    const [isModelLoaded, setIsModelLoaded] = useSessionStorage('model', false)
+    const model = useModel();
+    const setModel = useModelUpdate();
+    
+    const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
 
     const videoRef = useRef(null);
     const photoRef = useRef(null);
  
     const [hasPhoto, setHasPhoto] = useState(false);
     const [statusEmp, setStatusEmp] = useState("none");
-    const [employeChecked, setNameEmp] = useState(false);
-    const [predictModel, setPredict] = useState(false);
+    const [checkedEmployeeName, setCheckedEmployeeName] = useState(null);
+    const [isUpdate, setUpdate] = useState();
 
-    let model;
+    async function loadModel(){
+        const model_url = '/models/model.json';  
+        const loadedModel = await tf.loadLayersModel(model_url);
+        setModel(loadedModel);
+    }
 
-    if(!isModelLoaded) {
+    if(!model) {
         loadModel();
     }
 
@@ -62,33 +66,18 @@ export const AttendanceChecker = () =>{
     const downloadImage = () => {
         takePhoto();
         checkStatus();
-
-        const canvas = document.getElementById("my-canvas");
-        const predictIMG = document.getElementById("predictImg");
-        
-        canvas.toBlob(blob => {
-            // saveAs(blob, "imageResult.png");
-            predictIMG.src = URL.createObjectURL(blob);
-            handleShot();
-        });
+        handleShot();
     }
 
     const handleShot = () => {
-        if(isModelLoaded){
+        if(model) {
             runModel();
         }
     };
 
-    const getImage = () =>{
-        const imgToPredict = document.getElementById("predictImg").src;
-        return imgToPredict;
-    }
-
     useEffect(() => {
         getVideo();
     }, [videoRef]);
-
-    const [isUpdate, setUpdate] = useState();
 
     const handleClick = () => {
         setUpdate(current => !current);
@@ -145,23 +134,13 @@ export const AttendanceChecker = () =>{
         setStatusEmp("none");
     }
 
-    async function loadModel(){
-        const model_url = '/models/model.json';  
-        model = await tf.loadLayersModel(model_url);
-        setIsModelLoaded(true);
-        console.log(model);
-    }
-
-    const runModel = () => {
+    const runModel = () => {      
         const employeeIDs = ['FxEgusF', 'HQmm6kZ', 'WFTu5F0', 'k-1M2IA', 'nDUmAVI', 'sUKC7Jv', 'wdEwNpn', 'x695Vsp','Unknown'];
-
-        const gambar = document.getElementById("predictImg");
-        
+        const gambar = document.getElementById("my-canvas");    
         const tfTensor = tf.browser.fromPixels(gambar).resizeBilinear([64,64]).expandDims(0);
-        const prediction = model.predict(tfTensor, {batchSize: 10});
-        const predictedIndex = prediction.dataSync().findIndex(label => label === 1);
+        const prediction = model.predict(tfTensor, {batchSize: 10}).dataSync();
+        const predictedIndex = prediction.findIndex(label => label === 1);
         console.log(employeeIDs[predictedIndex]);
-        handleShot();
     }
 
     
@@ -185,16 +164,7 @@ export const AttendanceChecker = () =>{
 
                     <h1>SHOW YOUR FACE AT THE CAMERA</h1>                    
 
-                    {employeChecked && (
-                        <div>
-                            <h2>Luqman Aristio</h2>
-                        </div>
-                    )}
-
-                    {!employeChecked && (
-                        <div className={styles.loader}></div>
-                    )}
-
+                    {checkedEmployeeName ? <div><h2>Luqman Aristio</h2></div> : <div className={styles.loader}></div>}
                     <h3 className={statusEmp === "none" ? styles.emptyCheck : statusEmp === "ontime" ? styles.ontimeCheck : styles.lateCheck}>{checkEmployee()}</h3>
                 </div>
                 <div className={styles.cameraPart}>
@@ -208,26 +178,14 @@ export const AttendanceChecker = () =>{
                          <button onClick={getVideo} className={styles.refreshButton}>Refresh Camera</button>
                     </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>
-
-                    <img src={null} alt="for prediction" hidden id="predictImg" />
                 </div>
             </div>
-
-            
-
             {isUpdate && (
                 <div>
                     <TimeEdit handleSave={handleClick} setTimeSaved={setTimeSaved}/>
                     <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={handleClick}/>
                 </div>
             )}
-
-            {/* {predictModel && (
-                <div>
-                    <ModelPrediction gambarWajah={getImage()} statusAttendance={statusEmp} handleShot={handleShot}/>
-                </div>
-            )} */}
-
         </div>
     )
 }

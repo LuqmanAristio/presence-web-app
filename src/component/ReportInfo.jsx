@@ -5,11 +5,15 @@ import { useState, useEffect } from "react"
 import { useUser } from "./UserContext"
 import { faCloudArrowDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { read, utils, writeFile } from 'xlsx';
 
 export const ReportInfo = () =>{
 
     const currentUser = useUser();
     const [attendance, setAttendance] = useState([]);
+    const [daily, setDaily] = useState([]);
+    const [weekly, setWeekly] = useState([]);
+    const [monthly, setMonthly] = useState([]);
     const [loadingStatus, setLoading] = useState(true);
     const [loadingPercent, setPercent] = useState(true);
     const [widthValueOntime, setWidthValueOntime] = useState(0);
@@ -62,8 +66,65 @@ export const ReportInfo = () =>{
         }
     }
 
+    async function fetchDaily() {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/attendances/report`, {
+            params: {range: 'daily'},
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        else {
+            setDaily(response.data);
+        }
+    }
+
+    async function fetchWeekly() {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/attendances/report`, {
+            params: {range: 'weekly'},
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        else {
+            setWeekly(response.data);
+        }
+    }
+
+    async function fetchMonthly() {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverURL}/api/attendances/report`, {
+            params: {range: 'monthly'},
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`
+            },
+            validateStatus: () => true
+        });
+        if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
+        else {
+            setMonthly(response.data);
+        }
+    }
+
     useEffect(() => {
         fetchData();
+    }, [currentUser]);
+
+    useEffect(() => {
+        fetchDaily();
+    }, [currentUser]);
+
+    useEffect(() => {
+        fetchWeekly();
+    }, [currentUser]);
+
+    useEffect(() => {
+        fetchMonthly();
     }, [currentUser]);
 
     useEffect(() => {
@@ -90,6 +151,37 @@ export const ReportInfo = () =>{
         return waktu;
     }
 
+    const checkEmpty = () =>{
+        return arrayByStatus.length === 0 ?<div className={styles.loadingBox}><h1 className={styles.emptyData}>Empty</h1></div> : "";
+    }
+
+    const downloadDaily = () =>{
+        const x = utils.book_new();
+        const y = utils.json_to_sheet(daily);
+
+        utils.book_append_sheet(x, y, "MySheet1");
+
+        writeFile(x, "Daily Attendances.xlsx");
+    }
+
+    const downloadWeekly = () =>{
+        const x = utils.book_new();
+        const y = utils.json_to_sheet(weekly);
+
+        utils.book_append_sheet(x, y, "MySheet1");
+
+        writeFile(x, "Weekly Attendances.xlsx");
+    }
+    
+    const downloadMonthly = () =>{
+        const x = utils.book_new();
+        const y = utils.json_to_sheet(monthly);
+
+        utils.book_append_sheet(x, y, "MySheet1");
+
+        writeFile(x, "Monthly Attendances.xlsx");
+    }
+
     return(
         <div className={styles.mainReport}>
             <div className={styles.reportContent}>
@@ -112,6 +204,8 @@ export const ReportInfo = () =>{
                                     </div>
                                 </div>
                             }
+
+                            {!loadingStatus && checkEmpty()}
 
                             {!loadingStatus &&
                                 <div className={styles.lateList}>
@@ -165,21 +259,21 @@ export const ReportInfo = () =>{
                                 <h3>Today Report</h3>
 
                                 <div className={styles.downloadButton}>
-                                    <button><FontAwesomeIcon icon={faCloudArrowDown} className={styles.downloadIcon}/></button>
+                                    <button onClick={downloadDaily}><FontAwesomeIcon icon={faCloudArrowDown} className={styles.downloadIcon}/></button>
                                 </div>
                             </div>
                             <div className={styles.botBox}>
                                 <h3>Weekly Report</h3>
 
                                 <div className={styles.downloadButton}>
-                                    <button><FontAwesomeIcon icon={faCloudArrowDown} className={styles.downloadIcon}/></button>
+                                    <button onClick={downloadWeekly}><FontAwesomeIcon icon={faCloudArrowDown} className={styles.downloadIcon}/></button>
                                 </div>
                             </div>
                             <div className={styles.botBox}>
                                 <h3>Monthly Report</h3>
 
                                 <div className={styles.downloadButton}>
-                                    <button><FontAwesomeIcon icon={faCloudArrowDown} className={styles.downloadIcon}/></button>
+                                    <button onClick={downloadMonthly}><FontAwesomeIcon icon={faCloudArrowDown} className={styles.downloadIcon}/></button>
                                 </div>
                             </div>
                         </div>

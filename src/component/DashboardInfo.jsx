@@ -81,7 +81,6 @@ export const DashboardInfo = () => {
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
         else {
             setInfo(response.data);
-            console.log(response.data);
             setLoading(false);
         }
     }
@@ -102,6 +101,10 @@ export const DashboardInfo = () => {
 
     const loadingBar = () =>{
         return <div className={styles.loading}><span></span><span></span><span></span><span></span><span></span></div>
+    }
+
+    const checkEmpty = () =>{
+        return attendance.length === 0 ?<div className={styles.loadingBox}><h1 className={styles.emptyData}>Empty</h1></div> : "";
     }
 
     useEffect(() => {
@@ -207,7 +210,6 @@ export const DashboardInfo = () => {
                 </div>
                 <div className={styles.recentInfo}>
                     <h1>Recent Attendance</h1>
-                    
 
                     {loadingRecent &&
                         <div className={styles.loadingBox}>
@@ -220,6 +222,10 @@ export const DashboardInfo = () => {
                                 <div></div>
                             </div>
                         </div>
+                    }
+
+                    {!loadingRecent && checkEmpty()
+
                     }
 
                     {!loadingRecent &&

@@ -273,6 +273,12 @@
     margin-left: auto;
 }
 
+.loadingBox h1{
+    font-size: 3vw;
+    color: #878787;
+    opacity: 0.3;
+}
+
 .loading {
     --speed-of-animation: 0.9s;
     --gap: 6px;

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styles from '../style/Navigation.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
@@ -16,13 +16,22 @@ import report from "../image/report.png"
 import reportActive from "../image/report-active.png"
 import logout from "../image/logout.png"
 import logoutActive from "../image/logout-active.png"
-import { useUser } from "./UserContext"
+import { useUser, useUserUpdate } from "./UserContext"
 
 export const Sidebar = () => {
     const currentUser = useUser();
+    const setCurrentUser = useUserUpdate();
 
     const { pathname } = useLocation();
     const currentLocation = pathname.slice(1);
+
+    const navigate = useNavigate();
+
+    const handleLogOut = e => {
+        e.preventDefault();
+        setCurrentUser(null);
+        navigate('/');
+    }
     
     return(
         <div className={styles.sideBar}>
@@ -50,7 +59,7 @@ export const Sidebar = () => {
                 </div>
                 <div className={currentLocation === "logout" ? styles.active : styles.inactiveMenu}>
                     <img src={currentLocation === "logout" ? logoutActive : logout} alt="" />
-                    <h3><Link to="">Logout</Link></h3>
+                    <h3><Link onClick={handleLogOut}>Logout</Link></h3>
                 </div>
                 
             </div>

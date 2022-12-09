@@ -1,18 +1,40 @@
-import styles from "../style/Attendance.module.css"
 import {useRef, useEffect, useState} from "react"
-import { saveAs } from 'file-saver'
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TimeEdit } from "./TimeEdit";
+import { useUser } from "./UserContext";
+import { useModel, useModelUpdate } from "./ModelContext";
+
+import * as tf from "@tensorflow/tfjs";
+import axios from 'axios';
+
+import styles from "../style/Attendance.module.css";
 
 export const AttendanceChecker = () =>{
+    const currentUser = useUser();
+    const model = useModel();
+    const setModel = useModelUpdate();
+    
+    const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
 
     const videoRef = useRef(null);
     const photoRef = useRef(null);
  
     const [hasPhoto, setHasPhoto] = useState(false);
     const [statusEmp, setStatusEmp] = useState("none");
-    const [employeChecked, setNameEmp] = useState(false);
+    const [checkedEmployeeName, setCheckedEmployeeName] = useState(null);
+    const [isUpdate, setUpdate] = useState();
+
+    async function loadModel(){
+        const model_url = '/models/model.json';  
+        const loadedModel = await tf.loadLayersModel(model_url);
+        setModel(loadedModel);
+    }
+
+    if(!model) {
+        loadModel();
+    }
 
     const getVideo = () =>{
         navigator.mediaDevices
@@ -29,7 +51,7 @@ export const AttendanceChecker = () =>{
             })
     }
 
-    const takePhoto = () =>{
+    const takePhoto = () => {
         const width = 500;
         const height = 500;
 
@@ -44,29 +66,115 @@ export const AttendanceChecker = () =>{
         setHasPhoto(true);
     }
 
-    const downloadImage = () => {
+    const checkStatus = () => {
+        const hour = parseInt(timeSaved[0]);
+        const minute = parseInt(timeSaved[1]);
 
+        const today = new Date();
+        const hourNow = today.getHours();
+        const minuteNow = today.getMinutes();
+
+        if(hourNow > hour) {
+            // setStatusEmp("late");
+            return 'late';
+            // setTimeout(resetStatus, 2000); 
+        }
+        else if(hour === hourNow && minuteNow > minute) {
+            // setStatusEmp("late");
+            return 'late';
+            // setTimeout(resetStatus, 2000); 
+        }
+        else if(hour === hourNow && minute <= minuteNow) {
+            // setStatusEmp("ontime");
+            return 'ontime';
+            // setTimeout(resetStatus, 2000); 
+        }
+        else {
+            // setStatusEmp("ontime");
+            return 'ontime';
+            // setTimeout(resetStatus, 2000); 
+        }
+    }
+
+    const resetStatus = () =>{
+        setStatusEmp("none");
+        setCheckedEmployeeName(null);
+    }
+
+    const runModel = () => {
+        const employeeIDs = ['FxEgusF', 'HQmm6kZ', 'WFTu5F0', 'k-1M2IA', 'nDUmAVI', 'sUKC7Jv', 'wdEwNpn', 'x695Vsp','Unknown'];
+        const gambar = document.getElementById("my-canvas");    
+        const tfTensor = tf.browser.fromPixels(gambar).resizeBilinear([64,64]).expandDims(0);
+        const prediction = model.predict(tfTensor, {batchSize: 10}).dataSync();
+        const predictedIndex = prediction.findIndex(label => label === 1);
+        return employeeIDs[predictedIndex];
+    }
+
+    const saveAttendance = async (employeeId, status) => {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        try {
+            const response = await axios.post(`${serverURL}/api/attendances`,
+                {employeeId, status}, {
+                    headers: {
+                        Authorization: `Bearer ${currentUser.token}`
+                    },
+                },
+                {validateStatus: () => true}
+            );
+            if(response.status < 200 || response.status >= 300){
+                return console.log(response.data.message);
+            } else {
+                const {status, attendance} = response.data;
+                if(status === 'exists') {
+                    console.log(response.data.message);
+                    setStatusEmp("satisfied");
+                }
+                else{
+                    setStatusEmp("notexist");
+                }
+
+                console.log(attendance.employeeName);
+                setCheckedEmployeeName(attendance.employeeName);
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
+
+    const handleAttendanceCapture = () => {
         takePhoto();
-        checkStatus();
-
-        var canvas = document.getElementById("my-canvas");
-        canvas.toBlob(function(blob) {
-        saveAs(blob, "imageResult.png");
-});
+        const currentStatus = checkStatus();
+        if(!model) return;
+        const predictedEmployeeId = runModel();
+        saveAttendance(predictedEmployeeId, currentStatus);
     }
 
     useEffect(() => {
-        getVideo();
-    }, [videoRef])
+        updateInfo();
+    },[statusEmp])
 
-    const [isUpdate, setUpdate] = useState();
+    useEffect(() => {
+        getVideo();
+    }, [videoRef]);
+
+    const updateInfo = () =>{
+        if(statusEmp === "notexist"){
+            const currentStatus = checkStatus();
+            setStatusEmp(currentStatus);
+            setTimeout(resetStatus, 3000);
+        }
+        else if(statusEmp === "satisfied"){
+            setTimeout(resetStatus, 3000);
+        }
+
+        
+    }
 
     const handleClick = () => {
         setUpdate(current => !current);
     };
 
     const timeLocalSaved = () => {
-        const timeSaved = JSON.parse(localStorage.getItem("timeSaved"));
         const hour = timeSaved[0];
         const minute = timeSaved[1];
 
@@ -75,52 +183,17 @@ export const AttendanceChecker = () =>{
         return time;
     }
 
-    const checkStatus = () =>{
-        const timeSaved = JSON.parse(localStorage.getItem("timeSaved"));
-        const hour = timeSaved[0];
-        const minute = timeSaved[1];
-
-        const today = new Date();
-        const hourNow = today.getHours();
-        const minuteNow = today.getMinutes();
-
-        if(hourNow>hour){
-            setStatusEmp("late");
-        }
-        else if(hour===hourNow && minuteNow>minute){
-            setStatusEmp("late");
-        }
-        else if(hour===hourNow && minute<=minuteNow){
-            setStatusEmp("ontime");
-        }
-        else{
-            setStatusEmp("ontime");
-        }
-
-        setTimeout(resetStatus, 5000); 
-    }
-
     const checkEmployee = () =>{
-        if(statusEmp === "none"){
-            return "Waiting Subject..."
+        const status = {
+            none: "Waiting Subject...",
+            ontime: "Checked : On Time",
+            late: "Checked : Late",
+            satisfied: "Checked : Already Checked"
         }
-        else if(statusEmp === "ontime"){
-            return "Checked : On Time"
-        }
-        else{
-            return "Checked : Late"
-        }
+        return status[statusEmp];
     }
 
-    const employeeName = () =>{
-        setNameEmp(current => !current)
-    }
-
-    const resetStatus = () =>{
-        setStatusEmp("none");
-    }
     
-
     return(
         <div className={styles.attendanceChecker}>
             <div className={styles.attendanceContent}>
@@ -141,17 +214,9 @@ export const AttendanceChecker = () =>{
 
                     <h1>SHOW YOUR FACE AT THE CAMERA</h1>                    
 
-                    {employeChecked && (
-                        <div>
-                            <h2>Luqman Aristio</h2>
-                        </div>
-                    )}
+                    {checkedEmployeeName ? <div className={styles.employeeNameAtt}><h2>{checkedEmployeeName}</h2></div> : <div className={styles.loader}></div>}
 
-                    {!employeChecked && (
-                        <div className={styles.loader}></div>
-                    )}
-
-                    <h3 className={statusEmp === "none" ? styles.emptyCheck : statusEmp === "ontime" ? styles.ontimeCheck : styles.lateCheck}>{checkEmployee()}</h3>
+                    <h3 className={statusEmp === "none" ? styles.emptyCheck : statusEmp === "satisfied" ? styles.satsifiedCheck : statusEmp === "ontime" ? styles.ontimeCheck : styles.lateCheck}>{checkEmployee()}</h3>
                 </div>
                 <div className={styles.cameraPart}>
                     <div className={styles.cameraVideo}>
@@ -160,22 +225,18 @@ export const AttendanceChecker = () =>{
                         </video>
                     </div>
                     <div className={'result' + (hasPhoto ? 'hasPhoto' : '')} id={styles.buttonPhoto}>
-                         <button onClick={downloadImage} className={styles.saveButton}>Take Picture</button>
+                         <button onClick={handleAttendanceCapture} className={styles.saveButton}>Take Picture</button>
                          <button onClick={getVideo} className={styles.refreshButton}>Refresh Camera</button>
                     </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>
                 </div>
             </div>
-
-            
-
             {isUpdate && (
                 <div>
-                    <TimeEdit handleSave={handleClick}/>
+                    <TimeEdit handleSave={handleClick} setTimeSaved={setTimeSaved}/>
                     <FontAwesomeIcon icon={faXmark} className={styles.exitButton} onClick={handleClick}/>
                 </div>
             )}
-
         </div>
     )
 }

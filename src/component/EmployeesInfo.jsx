@@ -22,6 +22,9 @@ export const EmployeesInfo = () => {
     const phoneRef = useRef('');
     const departementRef = useRef('');
 
+    const [loadingStatus, setLoading] = useState(true);
+    const [infoStatus, setInfo] = useState(false);
+
     const [isShown, setIsShown] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
@@ -44,6 +47,7 @@ export const EmployeesInfo = () => {
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
         else {
             setEmployees(response.data);
+            setLoading(false);
         }
     }
 
@@ -57,7 +61,7 @@ export const EmployeesInfo = () => {
         });
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
         setEmployeesSummary(response.data);
-        console.log(employeesSummary);
+        setInfo(true);
     }
 
     useEffect(() => {
@@ -183,11 +187,37 @@ export const EmployeesInfo = () => {
                             </div>
                         </div>
                         <div className={styles.listEmployees}>
-                            <List 
-                                data={currentData} 
-                                updateForm={updateForm}
-                                deleteForm={deleteForm}
-                            />
+                        <table className={styles.tableList}>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Status</th>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Phone</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            {!loadingStatus &&
+                                <List 
+                                    data={currentData}
+                                    updateForm={updateForm}
+                                    deleteForm={deleteForm}
+                                />
+                            }
+                        </table>
+                        {loadingStatus &&
+                                <div className={styles.loadingBox}>
+                                    <div className={styles.spinner}>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                        }
 
                             <Pagination
                                 dataPerPage={dataPerPage}
@@ -207,7 +237,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Employees</h3>
-                                    <h5>{employeesSummary && employeesSummary.total} Persons</h5>
+                                    <h5>{infoStatus===true? employeesSummary.total : "00"} Persons</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -216,7 +246,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Department</h3>
-                                    <h5>{employeesSummary && employeesSummary.departementCount} Departmens</h5>
+                                    <h5>{infoStatus===true? employeesSummary.departementCount : "0"} Departmens</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -225,7 +255,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Active Employees</h3>
-                                    <h5>{employeesSummary && employeesSummary.statusCount.active} Persons</h5>
+                                    <h5>{infoStatus===true? employeesSummary.statusCount.active : "0"} Persons</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -234,7 +264,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Inactive Employees</h3>
-                                    <h5>{employeesSummary && employeesSummary.statusCount.inactive} Persons</h5>
+                                    <h5>{infoStatus===true? employeesSummary.statusCount.inactive : "0"} Persons</h5>
                                 </div>
                             </div>
                             <div className={styles.infoBox}>
@@ -243,7 +273,7 @@ export const EmployeesInfo = () => {
                                 </div>
                                 <div className={styles.infoText}>
                                     <h3>Unavailable Employees</h3>
-                                    <h5>{employeesSummary && employeesSummary.statusCount.unavailable} Persons</h5>
+                                    <h5>{infoStatus===true? employeesSummary.statusCount.unavailable : "0"} Persons</h5>
                                 </div>
                             </div>
                         </div>

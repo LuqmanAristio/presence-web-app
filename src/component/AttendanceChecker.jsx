@@ -75,25 +75,30 @@ export const AttendanceChecker = () =>{
         const minuteNow = today.getMinutes();
 
         if(hourNow > hour) {
-            setStatusEmp("late");
+            // setStatusEmp("late");
             return 'late';
-            // setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 2000); 
         }
         else if(hour === hourNow && minuteNow > minute) {
-            setStatusEmp("late");
+            // setStatusEmp("late");
             return 'late';
-            // setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 2000); 
         }
         else if(hour === hourNow && minute <= minuteNow) {
-            setStatusEmp("ontime");
+            // setStatusEmp("ontime");
             return 'ontime';
-            // setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 2000); 
         }
         else {
-            setStatusEmp("ontime");
+            // setStatusEmp("ontime");
             return 'ontime';
-            // setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 2000); 
         }
+    }
+
+    const resetStatus = () =>{
+        setStatusEmp("none");
+        setCheckedEmployeeName(null);
     }
 
     const runModel = () => {
@@ -122,7 +127,13 @@ export const AttendanceChecker = () =>{
                 const {status, attendance} = response.data;
                 if(status === 'exists') {
                     console.log(response.data.message);
+                    setStatusEmp("satisfied");
                 }
+                else{
+                    setStatusEmp("notexist");
+                }
+
+                console.log(attendance.employeeName);
                 setCheckedEmployeeName(attendance.employeeName);
             }
         } catch (err) {
@@ -139,8 +150,25 @@ export const AttendanceChecker = () =>{
     }
 
     useEffect(() => {
+        updateInfo();
+    },[statusEmp])
+
+    useEffect(() => {
         getVideo();
     }, [videoRef]);
+
+    const updateInfo = () =>{
+        if(statusEmp === "notexist"){
+            const currentStatus = checkStatus();
+            setStatusEmp(currentStatus);
+            setTimeout(resetStatus, 3000);
+        }
+        else if(statusEmp === "satisfied"){
+            setTimeout(resetStatus, 3000);
+        }
+
+        
+    }
 
     const handleClick = () => {
         setUpdate(current => !current);
@@ -159,7 +187,8 @@ export const AttendanceChecker = () =>{
         const status = {
             none: "Waiting Subject...",
             ontime: "Checked : On Time",
-            late: "Checked : Late"
+            late: "Checked : Late",
+            satisfied: "Checked : Already Checked"
         }
         return status[statusEmp];
     }
@@ -185,8 +214,9 @@ export const AttendanceChecker = () =>{
 
                     <h1>SHOW YOUR FACE AT THE CAMERA</h1>                    
 
-                    {checkedEmployeeName ? <div><h2>{checkedEmployeeName}</h2></div> : <div className={styles.loader}></div>}
-                    <h3 className={statusEmp === "none" ? styles.emptyCheck : statusEmp === "ontime" ? styles.ontimeCheck : styles.lateCheck}>{checkEmployee()}</h3>
+                    {checkedEmployeeName ? <div className={styles.employeeNameAtt}><h2>{checkedEmployeeName}</h2></div> : <div className={styles.loader}></div>}
+
+                    <h3 className={statusEmp === "none" ? styles.emptyCheck : statusEmp === "satisfied" ? styles.satsifiedCheck : statusEmp === "ontime" ? styles.ontimeCheck : styles.lateCheck}>{checkEmployee()}</h3>
                 </div>
                 <div className={styles.cameraPart}>
                     <div className={styles.cameraVideo}>

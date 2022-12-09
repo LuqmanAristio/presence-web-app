@@ -5,7 +5,6 @@ import { saveAs } from 'file-saver'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TimeEdit } from "./TimeEdit";
-import { ModelPrediction } from "./ModelPrediction";
 import * as tf from "@tensorflow/tfjs"
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { useUser } from "./UserContext";
@@ -64,13 +63,13 @@ export const AttendanceChecker = () =>{
         takePhoto();
         checkStatus();
 
-        const canvas = document.getElementById("my-canvas");
-        const predictIMG = document.getElementById("predictImg");
+        var canvas = document.getElementById("my-canvas");
+        var gambarni = document.getElementById("gambarCok");
         
-        canvas.toBlob(function(blob) {
+        canvas.toBlob(blob => {
             // saveAs(blob, "imageResult.png");
-            predictIMG.src = URL.createObjectURL(blob);
-            handleShot();
+            gambarni.src = URL.createObjectURL(blob);
+            setPredict(true);
         });
     }
 
@@ -81,14 +80,13 @@ export const AttendanceChecker = () =>{
     };
 
     const getImage = () =>{
-        const imgToPredict = document.getElementById("predictImg").src;
+        const imgToPredict = document.getElementById("gambarCok").src;
         return imgToPredict;
     }
 
-
     useEffect(() => {
         getVideo();
-    }, [videoRef]);
+    }, [videoRef])
 
     const [isUpdate, setUpdate] = useState();
 
@@ -211,7 +209,7 @@ export const AttendanceChecker = () =>{
                     </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>
 
-                    <img src={null} alt="for prediction" id="predictImg" />
+                    <img src={null} hidden id="gambarCok" />
                 </div>
             </div>
 

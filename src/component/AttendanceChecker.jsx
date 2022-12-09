@@ -1,12 +1,15 @@
-import styles from "../style/Attendance.module.css"
 import {useRef, useEffect, useState} from "react"
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TimeEdit } from "./TimeEdit";
-import * as tf from "@tensorflow/tfjs"
 import { useUser } from "./UserContext";
 import { useModel, useModelUpdate } from "./ModelContext";
+
+import * as tf from "@tensorflow/tfjs";
+import axios from 'axios';
+
+import styles from "../style/Attendance.module.css";
 
 export const AttendanceChecker = () =>{
     const currentUser = useUser();
@@ -48,7 +51,7 @@ export const AttendanceChecker = () =>{
             })
     }
 
-    const takePhoto = () =>{
+    const takePhoto = () => {
         const width = 500;
         const height = 500;
 
@@ -63,17 +66,79 @@ export const AttendanceChecker = () =>{
         setHasPhoto(true);
     }
 
-    const downloadImage = () => {
-        takePhoto();
-        checkStatus();
-        handleShot();
+    const checkStatus = () => {
+        const hour = parseInt(timeSaved[0]);
+        const minute = parseInt(timeSaved[1]);
+
+        const today = new Date();
+        const hourNow = today.getHours();
+        const minuteNow = today.getMinutes();
+
+        if(hourNow > hour) {
+            setStatusEmp("late");
+            return 'late';
+            // setTimeout(resetStatus, 3000); 
+        }
+        else if(hour === hourNow && minuteNow > minute) {
+            setStatusEmp("late");
+            return 'late';
+            // setTimeout(resetStatus, 3000); 
+        }
+        else if(hour === hourNow && minute <= minuteNow) {
+            setStatusEmp("ontime");
+            return 'ontime';
+            // setTimeout(resetStatus, 3000); 
+        }
+        else {
+            setStatusEmp("ontime");
+            return 'ontime';
+            // setTimeout(resetStatus, 3000); 
+        }
     }
 
-    const handleShot = () => {
-        if(model) {
-            runModel();
+    const runModel = () => {
+        const employeeIDs = ['FxEgusF', 'HQmm6kZ', 'WFTu5F0', 'k-1M2IA', 'nDUmAVI', 'sUKC7Jv', 'wdEwNpn', 'x695Vsp','Unknown'];
+        const gambar = document.getElementById("my-canvas");    
+        const tfTensor = tf.browser.fromPixels(gambar).resizeBilinear([64,64]).expandDims(0);
+        const prediction = model.predict(tfTensor, {batchSize: 10}).dataSync();
+        const predictedIndex = prediction.findIndex(label => label === 1);
+        return employeeIDs[predictedIndex];
+    }
+
+    const saveAttendance = async (employeeId, status) => {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        try {
+            const response = await axios.post(`${serverURL}/api/attendances`,
+                {employeeId, status}, {
+                    headers: {
+                        Authorization: `Bearer ${currentUser.token}`
+                    },
+                },
+                {validateStatus: () => true}
+            );
+            if(response.status < 200 || response.status >= 300){
+                return console.log(response.data.message);
+            } else {
+                const {status, attendance} = response.data;
+                if(status === 'exists') {
+                    console.log(response.data.message);
+                }
+                console.log(attendance.employeeName);
+                setCheckedEmployeeName(attendance.employeeName);
+            }
+        } catch (err) {
+            console.log(err.message);
         }
-    };
+    }
+
+    const handleAttendanceCapture = () => {
+        takePhoto();
+        const currentStatus = checkStatus();
+        if(!model) return;
+        const predictedEmployeeId = runModel();
+        console.log(predictedEmployeeId, currentStatus);
+        saveAttendance(predictedEmployeeId, currentStatus);
+    }
 
     useEffect(() => {
         getVideo();
@@ -92,55 +157,13 @@ export const AttendanceChecker = () =>{
         return time;
     }
 
-    const checkStatus = () =>{
-        const hour = parseInt(timeSaved[0]);
-        const minute = parseInt(timeSaved[1]);
-
-        const today = new Date();
-        const hourNow = today.getHours();
-        const minuteNow = today.getMinutes();
-
-        if(hourNow > hour) {
-            setStatusEmp("late");
-            // setTimeout(resetStatus, 3000); 
-        }
-        else if(hour === hourNow && minuteNow > minute) {
-            setStatusEmp("late");
-            // setTimeout(resetStatus, 3000); 
-        }
-        else if(hour === hourNow && minute <= minuteNow) {
-            setStatusEmp("ontime");
-            // setTimeout(resetStatus, 3000); 
-        }
-        else {
-            setStatusEmp("ontime");
-            // setTimeout(resetStatus, 3000); 
-        }
-    }
-
     const checkEmployee = () =>{
-        if(statusEmp === "none"){
-            return "Waiting Subject..."
+        const status = {
+            none: "Waiting Subject...",
+            ontime: "Checked : On Time",
+            late: "Checked : Late"
         }
-        else if(statusEmp === "ontime"){
-            return "Checked : On Time"
-        }
-        else{
-            return "Checked : Late"
-        }
-    }
-
-    const resetStatus = () =>{
-        setStatusEmp("none");
-    }
-
-    const runModel = () => {      
-        const employeeIDs = ['FxEgusF', 'HQmm6kZ', 'WFTu5F0', 'k-1M2IA', 'nDUmAVI', 'sUKC7Jv', 'wdEwNpn', 'x695Vsp','Unknown'];
-        const gambar = document.getElementById("my-canvas");    
-        const tfTensor = tf.browser.fromPixels(gambar).resizeBilinear([64,64]).expandDims(0);
-        const prediction = model.predict(tfTensor, {batchSize: 10}).dataSync();
-        const predictedIndex = prediction.findIndex(label => label === 1);
-        console.log(employeeIDs[predictedIndex]);
+        return status[statusEmp];
     }
 
     
@@ -164,7 +187,7 @@ export const AttendanceChecker = () =>{
 
                     <h1>SHOW YOUR FACE AT THE CAMERA</h1>                    
 
-                    {checkedEmployeeName ? <div><h2>Luqman Aristio</h2></div> : <div className={styles.loader}></div>}
+                    {checkedEmployeeName ? <div><h2>{checkedEmployeeName}</h2></div> : <div className={styles.loader}></div>}
                     <h3 className={statusEmp === "none" ? styles.emptyCheck : statusEmp === "ontime" ? styles.ontimeCheck : styles.lateCheck}>{checkEmployee()}</h3>
                 </div>
                 <div className={styles.cameraPart}>
@@ -174,7 +197,7 @@ export const AttendanceChecker = () =>{
                         </video>
                     </div>
                     <div className={'result' + (hasPhoto ? 'hasPhoto' : '')} id={styles.buttonPhoto}>
-                         <button onClick={downloadImage} className={styles.saveButton}>Take Picture</button>
+                         <button onClick={handleAttendanceCapture} className={styles.saveButton}>Take Picture</button>
                          <button onClick={getVideo} className={styles.refreshButton}>Refresh Camera</button>
                     </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>

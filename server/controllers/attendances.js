@@ -257,13 +257,28 @@ router.get('/report', getAdmin, async (req, res) => {
 
 // Add new attandance
 router.post('/', async (req, res) => {
+    const todayBegin = new Date();
+    todayBegin.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
     const {employeeId, status} = req.body;
     if(!employeeId || !status) {
         return res.status(400).json({message: "parameters 'employeeId' and 'status' are required"});
     }
     try {
-        const attendance = await Attendance.create({employeeId, status});
-        return res.json({message: 'Attendance created!', attendance});
+        const attendance = await Attendance.findOne({
+            include: [{model: Employee, where: {admin: req.admin.userId, employeeId}}],
+            where: {time: {[Op.between]: [todayBegin, todayEnd]}}
+        });
+        if(attendance) {
+            const {id, employeeId, Employee, time, status} = attendance;
+            const attendanceInfo = {id, employeeId, employeeName: Employee.name, time, status};
+            return res.json({status: 'exists', message: 'Attendance already added today', attendance: attendanceInfo})
+        }
+        const employee = await Employee.findOne({where: {employeeId}});
+        const newAttendance = await Attendance.create({employeeId, status});
+        return res.json({status: 'success', message: 'Attendance created!', attendance: {...newAttendance, name: employee.name}});
     } catch (err) {
         console.log(err.message);
     }

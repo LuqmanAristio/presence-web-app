@@ -5,10 +5,15 @@ import { saveAs } from 'file-saver'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TimeEdit } from "./TimeEdit";
-import { ModelPrediction } from "./ModelPrediction";
+import * as tf from "@tensorflow/tfjs"
+import { useSessionStorage } from "../hooks/useSessionStorage";
+import { useUser } from "./UserContext";
 
 export const AttendanceChecker = () =>{
     const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
+
+    const currentUser = useUser();
+    const [isModelLoaded, setIsModelLoaded] = useSessionStorage('model', false)
 
     const videoRef = useRef(null);
     const photoRef = useRef(null);
@@ -17,6 +22,12 @@ export const AttendanceChecker = () =>{
     const [statusEmp, setStatusEmp] = useState("none");
     const [employeChecked, setNameEmp] = useState(false);
     const [predictModel, setPredict] = useState(false);
+
+    let model;
+
+    if(!isModelLoaded) {
+        loadModel();
+    }
 
     const getVideo = () =>{
         navigator.mediaDevices
@@ -58,9 +69,15 @@ export const AttendanceChecker = () =>{
         canvas.toBlob(blob => {
             // saveAs(blob, "imageResult.png");
             predictIMG.src = URL.createObjectURL(blob);
-            setPredict(true);
+            handleShot();
         });
     }
+
+    const handleShot = () => {
+        if(isModelLoaded){
+            runModel();
+        }
+    };
 
     const getImage = () =>{
         const imgToPredict = document.getElementById("predictImg").src;
@@ -96,19 +113,19 @@ export const AttendanceChecker = () =>{
 
         if(hourNow > hour) {
             setStatusEmp("late");
-            setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 3000); 
         }
         else if(hour === hourNow && minuteNow > minute) {
             setStatusEmp("late");
-            setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 3000); 
         }
         else if(hour === hourNow && minute <= minuteNow) {
             setStatusEmp("ontime");
-            setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 3000); 
         }
         else {
             setStatusEmp("ontime");
-            setTimeout(resetStatus, 3000); 
+            // setTimeout(resetStatus, 3000); 
         }
     }
 
@@ -127,8 +144,27 @@ export const AttendanceChecker = () =>{
     const resetStatus = () =>{
         setStatusEmp("none");
     }
-    
 
+    async function loadModel(){
+        const model_url = '/models/model.json';  
+        model = await tf.loadLayersModel(model_url);
+        setIsModelLoaded(true);
+        console.log(model);
+    }
+
+    const runModel = () => {
+        const employeeIDs = ['FxEgusF', 'HQmm6kZ', 'WFTu5F0', 'k-1M2IA', 'nDUmAVI', 'sUKC7Jv', 'wdEwNpn', 'x695Vsp','Unknown'];
+
+        const gambar = document.getElementById("predictImg");
+        
+        const tfTensor = tf.browser.fromPixels(gambar).resizeBilinear([64,64]).expandDims(0);
+        const prediction = model.predict(tfTensor, {batchSize: 10});
+        const predictedIndex = prediction.dataSync().findIndex(label => label === 1);
+        console.log(employeeIDs[predictedIndex]);
+        handleShot();
+    }
+
+    
     return(
         <div className={styles.attendanceChecker}>
             <div className={styles.attendanceContent}>
@@ -186,11 +222,11 @@ export const AttendanceChecker = () =>{
                 </div>
             )}
 
-            {predictModel && (
+            {/* {predictModel && (
                 <div>
-                    <ModelPrediction gambarWajah={getImage()} />
+                    <ModelPrediction gambarWajah={getImage()} statusAttendance={statusEmp} handleShot={handleShot}/>
                 </div>
-            )}
+            )} */}
 
         </div>
     )

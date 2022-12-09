@@ -10,8 +10,29 @@ const router = express.Router();
 
 router.use(getAdmin);
 
-// Get all admin's employees' attendances
+// Get all admin's employees' attendances today
 router.get('/', async (req, res) => {
+    const todayBegin = new Date();
+    todayBegin.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    try {
+        const attendances = await Attendance.findAll({
+            include: [{model: Employee, where: {admin: req.admin.userId}}],
+            where: {time: {[Op.between]: [todayBegin, todayEnd]}},
+            order: [['time', 'DESC']]
+        });
+        const pureAttendances = attendances.map(({id, employeeId, time, status, createdAt, updatedAt, Employee}) => (
+            {id, employeeId, employeeName: Employee.name, time, day: new Date(time).getDay(), status, createdAt, updatedAt}
+        ));
+        return res.json(pureAttendances);
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
+// Get all admin's employees' attendances
+router.get('/all', async (req, res) => {
     try {
         const attendances = await Attendance.findAll({
             include: [{model: Employee, where: {admin: req.admin.userId}}],
@@ -96,6 +117,7 @@ router.get('/info', async (req, res) => {
     monthBegin.setDate(1);
     monthBegin.setHours(0, 0, 0, 0);
     try {
+        const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId, status: 'active'}});
         const thisDayAttendances = await Attendance.findAll({
             include: [{model: Employee, where: {admin: req.admin.userId}}],
             where: {
@@ -115,10 +137,9 @@ router.get('/info', async (req, res) => {
         const {ontime, late, absent} = {
             ontime: thisDayAttendances.filter(attendance => attendance.status === 'ontime').length,
             late: thisDayAttendances.filter(attendance => attendance.status === 'late').length,
-            absent: thisDayAttendances - thisDayAttendances.length
+            absent: activeEmployees.length - thisDayAttendances.length
         };
 
-        const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId, status: 'active'}});
         const thisMonthTotalAttendances = activeEmployees.map(employee => {
             const registerDate = new Date(employee.createdAt);
             // Same year

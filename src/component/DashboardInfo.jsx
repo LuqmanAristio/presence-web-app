@@ -81,6 +81,7 @@ export const DashboardInfo = () => {
         if(response.status < 200 || response.status >= 300) return console.log(response.data.message);
         else {
             setInfo(response.data);
+            console.log(response.data);
             setLoading(false);
         }
     }

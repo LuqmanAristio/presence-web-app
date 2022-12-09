@@ -123,7 +123,6 @@ export const AttendanceChecker = () =>{
                 if(status === 'exists') {
                     console.log(response.data.message);
                 }
-                console.log(attendance.employeeName);
                 setCheckedEmployeeName(attendance.employeeName);
             }
         } catch (err) {
@@ -136,7 +135,6 @@ export const AttendanceChecker = () =>{
         const currentStatus = checkStatus();
         if(!model) return;
         const predictedEmployeeId = runModel();
-        console.log(predictedEmployeeId, currentStatus);
         saveAttendance(predictedEmployeeId, currentStatus);
     }
 

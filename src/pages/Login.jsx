@@ -12,6 +12,7 @@ import logo from '../image/presencelogo.png';
 export const Login = () =>{
     const setCurrentUser = useUserUpdate();
 
+
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
@@ -69,7 +70,7 @@ export const Login = () =>{
                             <p>presence@company.com</p>
                         </div>
 
-                        <FontAwesomeIcon icon={faArrowRight} className={styles.arrow}/>
+                        <a href="https://www.instagram.com/luqman_aristio" rel="noopener noreferrer"><FontAwesomeIcon icon={faArrowRight} className={styles.arrow}/></a> 
                     </div>
                 </div>
                 <div className={styles.rightLogin}>
@@ -99,7 +100,16 @@ export const Login = () =>{
                         </form>
                     </div>
 
-                    <h3>Forget your password?<span className={styles.contactUs}> Contact us</span></h3>
+                    <h3>Forget your password?<span className={styles.contactUs}> <a href="https://www.instagram.com/luqman_aristio" rel="noopener noreferrer">Contact us</a> </span></h3>
+                </div>
+            </div>
+
+            <div className={styles.minWidth}>
+                <div className={styles.boxWidth}>
+                    <h1>Oops...</h1>
+                    <h3>Make sure you are using a laptop or computer to access this website</h3>
+
+                    <h4>Min width : 640px</h4>
                 </div>
             </div>
         </div>

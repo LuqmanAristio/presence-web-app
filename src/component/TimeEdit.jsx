@@ -34,7 +34,7 @@ export const TimeEdit = ({handleSave, setTimeSaved}) =>{
 
                     <div className={styles.hourTime}>
                         <div className={styles.inputHour}>
-                            <input ref={hourCheck} type="number" placeholder="00" min="1" max="24" required/>
+                            <input ref={hourCheck} type="number" placeholder="00" min="0" max="24" required/>
                         </div>
                         <h4>Hour</h4>
                     </div>

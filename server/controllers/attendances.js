@@ -174,7 +174,7 @@ router.get('/info', async (req, res) => {
 });
 
 // Get attendance reports
-router.get('/report', getAdmin, async (req, res) => {
+router.get('/report', async (req, res) => {
     const todayBegin = new Date();
     todayBegin.setHours(0, 0, 0, 0);
     const todayEnd = new Date();
@@ -278,9 +278,26 @@ router.post('/', async (req, res) => {
         }
         const employee = await Employee.findOne({where: {employeeId}});
         const newAttendance = await Attendance.create({employeeId, status});
-        return res.json({status: 'success', message: 'Attendance created!', attendance: {...newAttendance, name: employee.name}});
+        return res.json({status: 'success', message: 'Attendance created!', attendance: {...newAttendance, employeeName: employee.name}});
     } catch (err) {
         console.log(err.message);
+    }
+});
+
+// Reset today's attendances (for testing only)
+router.delete('/today', async (req, res) => {
+    const todayBegin = new Date();
+    todayBegin.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    try {
+        const attendances = await Attendance.destroy({
+            where: {time: {[Op.between]: [todayBegin, todayEnd]}},
+        });
+        return res.json({message: 'Attendances deleted', deletedCount: attendances});
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({message: 'Server/database error', error: err.message});
     }
 });
 

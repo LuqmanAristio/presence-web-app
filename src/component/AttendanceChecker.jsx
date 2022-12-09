@@ -8,12 +8,15 @@ import { TimeEdit } from "./TimeEdit";
 import * as tf from "@tensorflow/tfjs"
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { useUser } from "./UserContext";
+import { useModel, useModelUpdate } from "./ModelContext";
 
 export const AttendanceChecker = () =>{
-    const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
-
     const currentUser = useUser();
-    const [isModelLoaded, setIsModelLoaded] = useSessionStorage('model', false)
+    const model = useModel();
+    const setModel = useModelUpdate();
+    
+    const [timeSaved, setTimeSaved] = useLocalStorage('timeSaved', ['08', '00']);
+    // const [isModelLoaded, setIsModelLoaded] = useSessionStorage('model', false)
 
     const videoRef = useRef(null);
     const photoRef = useRef(null);
@@ -23,9 +26,14 @@ export const AttendanceChecker = () =>{
     const [employeChecked, setNameEmp] = useState(false);
     const [predictModel, setPredict] = useState(false);
 
-    let model;
+    async function loadModel(){
+        const model_url = '/models/model.json';  
+        const loadedModel = await tf.loadLayersModel(model_url);
+        console.log(loadedModel);
+        setModel(loadedModel);
+    }
 
-    if(!isModelLoaded) {
+    if(!model) {
         loadModel();
     }
 
@@ -74,7 +82,8 @@ export const AttendanceChecker = () =>{
     }
 
     const handleShot = () => {
-        if(isModelLoaded){
+        if(model) {
+            console.log('model', model);
             runModel();
         }
     };
@@ -145,23 +154,19 @@ export const AttendanceChecker = () =>{
         setStatusEmp("none");
     }
 
-    async function loadModel(){
-        const model_url = '/models/model.json';  
-        model = await tf.loadLayersModel(model_url);
-        setIsModelLoaded(true);
-        console.log(model);
-    }
-
     const runModel = () => {
         const employeeIDs = ['FxEgusF', 'HQmm6kZ', 'WFTu5F0', 'k-1M2IA', 'nDUmAVI', 'sUKC7Jv', 'wdEwNpn', 'x695Vsp','Unknown'];
 
         const gambar = document.getElementById("predictImg");
+
+        console.log('running model');
+        console.log(model);
         
         const tfTensor = tf.browser.fromPixels(gambar).resizeBilinear([64,64]).expandDims(0);
-        const prediction = model.predict(tfTensor, {batchSize: 10});
-        const predictedIndex = prediction.dataSync().findIndex(label => label === 1);
+        const prediction = model.predict(tfTensor, {batchSize: 10}).dataSync();
+        console.log(prediction);
+        const predictedIndex = prediction.findIndex(label => label === Math.max(...prediction));
         console.log(employeeIDs[predictedIndex]);
-        handleShot();
     }
 
     
@@ -209,7 +214,7 @@ export const AttendanceChecker = () =>{
                     </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>
 
-                    <img src={null} alt="for prediction" hidden id="predictImg" />
+                    <img src={null} height={500} width={500} alt="for prediction"  id="predictImg" />
                 </div>
             </div>
 

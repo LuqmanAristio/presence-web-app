@@ -191,9 +191,9 @@ router.get('/report', getAdmin, async (req, res) => {
     try {
         switch(range) {
             case 'daily': {
-                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId}});
+                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId, status: 'active'}});
                 const thisDayAttendances = await Attendance.findAll({
-                    include: [{model: Employee, where: {admin: req.admin.userId}}],
+                    include: [{model: Employee, where: {admin: req.admin.userId, status: 'active'}}],
                     where: {
                         time: {
                             [Op.between]: [todayBegin, todayEnd]
@@ -208,9 +208,9 @@ router.get('/report', getAdmin, async (req, res) => {
                 return res.json(employeeReport);
             }
             case 'weekly': {
-                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId}});
+                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId, status: 'active'}});
                 const thisWeekAttendances = await Attendance.findAll({
-                    include: [{model: Employee, where: {admin: req.admin.userId}}],
+                    include: [{model: Employee, where: {admin: req.admin.userId, status: 'active'}}],
                     where: {
                         time: {
                             [Op.between]: [lastWeek, now]
@@ -227,9 +227,9 @@ router.get('/report', getAdmin, async (req, res) => {
                 return res.json(employeeReport);
             }
             case 'monthly': {
-                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId}});
+                const activeEmployees = await Employee.findAll({where: {admin: req.admin.userId, status: 'active'}});
                 const thisMonthAttendances = await Attendance.findAll({
-                    include: [{model: Employee, where: {admin: req.admin.userId}}],
+                    include: [{model: Employee, where: {admin: req.admin.userId, status: 'active'}}],
                     where: {
                         time: {
                             [Op.between]: [monthBegin, now]

@@ -225,6 +225,9 @@ export const AttendanceChecker = () =>{
                          <button onClick={handleAttendanceCapture} className={styles.saveButton}>Take Picture</button>
                          <button onClick={getVideo} className={styles.refreshButton}>Refresh Camera</button>
                     </div>
+                    <div className={styles.warningCamera}>
+                        <h4>Make sure you allow camera access in your browser</h4>
+                    </div>
                     <canvas ref={photoRef} hidden id="my-canvas"></canvas>
                 </div>
             </div>

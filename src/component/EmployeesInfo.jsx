@@ -40,7 +40,7 @@ export const EmployeesInfo = () => {
         const response = await axios.get(`${serverURL}/api/employees`, {
             params,
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });
@@ -55,7 +55,7 @@ export const EmployeesInfo = () => {
         const serverURL = process.env.REACT_APP_SERVER_URL;
         const response = await axios.get(`${serverURL}/api/employees/info`, {
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });

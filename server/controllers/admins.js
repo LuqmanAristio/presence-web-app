@@ -1,10 +1,12 @@
 import express from 'express';
 
-import { nanoid } from 'nanoid';
+import getAdmin from '../middlewares/getAdmin.js'; 
 import Admin from '../models/admin.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { nanoid } from 'nanoid';
+
 
 const router = express.Router();
 
@@ -17,6 +19,12 @@ router.get('/', async (req, res) => {
         console.log(err.message);
         return res.status(500).json({message: 'Server/database error', error: err.message});
     }
+});
+
+// Get info by token
+router.get('/me', getAdmin, (req, res) => {
+    const {userId, name, departement} = req.admin;
+    return res.json({userId, name, departement});
 });
 
 // Get admin by ID
@@ -59,7 +67,7 @@ router.post('/login', async (req, res) => {
 
     const adminPayload = await Admin.findOne({where: {username}, attributes: {exclude: ['username', 'password']}});
     const token = jwt.sign(adminPayload.toJSON(), process.env.JWT_SECRET, {expiresIn: '1h'});
-    res.json({ok: true, message: 'Logged In', token, user: admin});
+    res.json({ok: true, message: 'Logged In', token});
 });
 
 // Delete admin by ID

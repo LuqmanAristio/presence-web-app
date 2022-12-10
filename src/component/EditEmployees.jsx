@@ -29,7 +29,7 @@ export const EditEmployees = ({data, updateForm}) =>{
         };
         const response = await axios.put(`${serverURL}/api/employees/${data.employeeId}`, employeeData, {
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });

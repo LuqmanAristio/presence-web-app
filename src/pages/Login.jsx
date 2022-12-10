@@ -40,10 +40,8 @@ export const Login = () =>{
                     setLoading(false)
                 }, 2000);
             }
-            
             else {
-                const {token, user} = response.data;
-                setCurrentUser({token, data: user});
+                setCurrentUser(response.data.token);
             }
         } catch (err) {
             console.log('catched');

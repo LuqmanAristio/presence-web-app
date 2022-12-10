@@ -23,13 +23,12 @@ export const AddEmployees = ({handleSave}) =>{
             phone: phoneRef.current.value,
             address: addressRef.current.value,
         };
-        const response = await axios.post(`${serverURL}/api/employees`, employeeData, {
+        await axios.post(`${serverURL}/api/employees`, employeeData, {
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });
-        console.log(response);
         handleSave();
     }
 
@@ -80,7 +79,7 @@ export const AddEmployees = ({handleSave}) =>{
                         </div>
 
                         <button type="submit" className={styles.confirmButton}>Add</button>
-                        <button className={styles.cancelButton} onClick={() => handleSave()}>Cancel</button>
+                        <button className={styles.cancelButton} onClick={handleSave}>Cancel</button>
                     </form>
                 </div>
             </div>

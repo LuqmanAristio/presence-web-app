@@ -116,7 +116,7 @@ export const AttendanceChecker = () =>{
             const response = await axios.post(`${serverURL}/api/attendances`,
                 {employeeId, status}, {
                     headers: {
-                        Authorization: `Bearer ${currentUser.token}`
+                        Authorization: `Bearer ${currentUser}`
                     },
                 },
                 {validateStatus: () => true}
@@ -126,14 +126,11 @@ export const AttendanceChecker = () =>{
             } else {
                 const {status, attendance} = response.data;
                 if(status === 'exists') {
-                    console.log(response.data.message);
                     setStatusEmp("satisfied");
                 }
                 else{
                     setStatusEmp("notexist");
                 }
-
-                console.log(attendance.employeeName);
                 setCheckedEmployeeName(attendance.employeeName);
             }
         } catch (err) {

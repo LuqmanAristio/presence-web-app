@@ -25,6 +25,7 @@ export const AttendanceChecker = () =>{
     const [statusEmp, setStatusEmp] = useState("none");
     const [checkedEmployeeName, setCheckedEmployeeName] = useState(null);
     const [isUpdate, setUpdate] = useState();
+    const [statusCamera, setCamera] = useState(true);
 
     async function loadModel(){
         const model_url = '/models/model.json';  
@@ -142,6 +143,7 @@ export const AttendanceChecker = () =>{
     }
 
     const handleAttendanceCapture = () => {
+        setCamera(false);
         takePhoto();
         const currentStatus = checkStatus();
         if(!model) return;
@@ -161,13 +163,40 @@ export const AttendanceChecker = () =>{
         if(statusEmp === "notexist"){
             const currentStatus = checkStatus();
             setStatusEmp(currentStatus);
-            setTimeout(resetStatus, 3000);
+            
+            
+            setTimeout(() =>{
+                checkAttendance();
+                if(statusCamera === true){
+
+                }
+                else{
+                    resetStatus();
+                    setCamera(true);
+                }
+            }, 3000);
         }
         else if(statusEmp === "satisfied"){
-            setTimeout(resetStatus, 3000);
-        }
+            setTimeout(() =>{
+                checkAttendance();
+                if(statusCamera === true){
 
-        
+                }
+                else{
+                    resetStatus();
+                    setCamera(true);
+                }
+            }, 3000);
+        }
+    }
+
+    const checkAttendance = () =>{
+        if(statusEmp === "none"){
+            setCamera(true);
+        }
+        else{
+            setCamera(false);
+        }
     }
 
     const handleClick = () => {
@@ -225,7 +254,14 @@ export const AttendanceChecker = () =>{
                         </video>
                     </div>
                     <div className={'result' + (hasPhoto ? 'hasPhoto' : '')} id={styles.buttonPhoto}>
-                         <button onClick={handleAttendanceCapture} className={styles.saveButton}>Take Picture</button>
+                        {!statusCamera && 
+                            <button className={styles.saveButton}>Waiting..</button>
+                        }
+
+                        {statusCamera &&
+                            <button onClick={handleAttendanceCapture} className={styles.saveButton}>Take Picture</button>
+                        }
+                    
                          <button onClick={getVideo} className={styles.refreshButton}>Refresh Camera</button>
                     </div>
                     <div className={styles.warningCamera}>

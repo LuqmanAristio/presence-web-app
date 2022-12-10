@@ -1,9 +1,12 @@
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"
-import styles from '../style/Navigation.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { useLocation } from "react-router-dom";
+import { useUser, useUserUpdate } from "./UserContext";
+import axios from "axios";
 
+import styles from '../style/Navigation.module.css'
 import profilImg from "../image/profile.png"
 import logo from "../image/presencelogo.png"
 import dashboard from "../image/dashboard.png"
@@ -16,7 +19,6 @@ import report from "../image/report.png"
 import reportActive from "../image/report-active.png"
 import logout from "../image/logout.png"
 import logoutActive from "../image/logout-active.png"
-import { useUser, useUserUpdate } from "./UserContext"
 
 export const Sidebar = () => {
     const currentUser = useUser();
@@ -26,6 +28,32 @@ export const Sidebar = () => {
     const currentLocation = pathname.slice(1);
 
     const navigate = useNavigate();
+
+    const [currentUserData, setCurrentUserData] = useState(null);
+
+    const getAdminInfo = async () => {
+        const serverURL = process.env.REACT_APP_SERVER_URL;
+        try {
+            const response = await axios.get(`${serverURL}/api/admins/me`, {
+                headers: {
+                    Authorization: `Bearer ${currentUser}`
+                },
+                validateStatus: () => true
+            });
+            if(response.status < 200 || response.status >= 300){
+                return console.log(response.data);
+            }
+            else {
+                setCurrentUserData(response.data);
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
+
+    useEffect(() => {
+        getAdminInfo();
+    }, [currentUser]);
 
     const handleLogOut = e => {
         e.preventDefault();
@@ -68,7 +96,7 @@ export const Sidebar = () => {
                 <img src={profilImg} alt="adminImg"/>
 
                 <div className={styles.profilAdmin}>
-                    <h3>{currentUser.data.name}</h3>
+                    <h3>{currentUserData ? currentUserData.name : '-'}</h3>
                     <p>Admin</p>
                 </div>
 

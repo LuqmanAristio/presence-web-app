@@ -11,13 +11,12 @@ export const DeleteBox = ({data, deleteForm}) =>{
     const handleSubmit = async e => {
         e.preventDefault();
         const serverURL = process.env.REACT_APP_SERVER_URL;
-        const response = await axios.delete(`${serverURL}/api/employees/${data.employeeId}`, {
+        await axios.delete(`${serverURL}/api/employees/${data.employeeId}`, {
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });
-        console.log(response);
         deleteForm();
     }
 
@@ -31,7 +30,7 @@ export const DeleteBox = ({data, deleteForm}) =>{
 
                     <form onSubmit={handleSubmit}>
                         <button className={styles.yesAnswer} type="submit">Yes</button>
-                        <button className={styles.noAnswer} onClick={() => deleteForm()}>No</button>
+                        <button className={styles.noAnswer} onClick={deleteForm}>No</button>
                     </form>
 
                 </div>

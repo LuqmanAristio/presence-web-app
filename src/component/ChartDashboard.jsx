@@ -16,7 +16,7 @@ export const ChartDashboard = () =>{
         const serverURL = process.env.REACT_APP_SERVER_URL;
         const response = await axios.get(`${serverURL}/api/attendances/weekly`, {
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });

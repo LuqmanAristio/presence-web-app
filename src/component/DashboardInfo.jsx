@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import styles from "../style/DashboardInfo.module.css"
 import { ChartDashboard } from "./ChartDashboard"
 import { faUsers, faUserCheck, faUserClock, faUserXmark } from "@fortawesome/free-solid-svg-icons"
@@ -59,7 +61,7 @@ export const DashboardInfo = () => {
         const serverURL = process.env.REACT_APP_SERVER_URL;
         const response = await axios.get(`${serverURL}/api/attendances`, {
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });
@@ -74,7 +76,7 @@ export const DashboardInfo = () => {
         const serverURL = process.env.REACT_APP_SERVER_URL;
         const response = await axios.get(`${serverURL}/api/attendances/info`, {
             headers: {
-                Authorization: `Bearer ${currentUser.token}`
+                Authorization: `Bearer ${currentUser}`
             },
             validateStatus: () => true
         });

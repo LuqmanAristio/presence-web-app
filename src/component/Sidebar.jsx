@@ -41,6 +41,9 @@ export const Sidebar = () => {
                 validateStatus: () => true
             });
             if(response.status < 200 || response.status >= 300){
+                if(response.data.error === 'jwt expired') {
+                    handleLogOut();
+                }
                 return console.log(response.data);
             }
             else {
@@ -55,8 +58,7 @@ export const Sidebar = () => {
         getAdminInfo();
     }, [currentUser]);
 
-    const handleLogOut = e => {
-        e.preventDefault();
+    const handleLogOut = () => {
         setCurrentUser(null);
         navigate('/');
     }

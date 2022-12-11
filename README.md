@@ -48,6 +48,6 @@ In report page, admins can get daily, weekly, and monthly report of employee att
 The dataset for this app is collected manually by searching images of avenger members and taking faces images of ourselves. You can access the dataset [here](https://drive.google.com/file/d/1KXZiGpPNOq3spWzjc_-vNOAvwHn5V1DQ/view?usp=share_link)
 
 ## Deployment
-Presence is currently deployed and running, visit the website [here](https://presence-web.netlify.app with these credentials
+Presence is currently deployed and running, visit the website [here](https://presence-web.netlify.app) with these credentials
 **Username**: geats
 **Password**: kitsune123
